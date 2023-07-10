@@ -102,10 +102,8 @@ p.bol {
 }
 .time {
     display: block;
-    position: absolute;
+    position: relative;
     float: right;
-    margin-left: 18em;
-    margin-top: 1em;
     background: #FFD15B;
     width: 65px;
     padding: 8px 15px 0px 15px;
@@ -113,4 +111,6 @@ p.bol {
     height: 26px;
     border-radius: 14px;
     text-align: center;
+    top: -15em;
+    left: -1em;
 }
