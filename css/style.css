@@ -18,6 +18,8 @@ main {
     display: flex;
     align-items: center;
     margin-bottom: 20px;
+    width: 80%;
+    margin: 5em auto;
 }
 
 #main-search-input {
@@ -37,10 +39,28 @@ main {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 20px;
+    width: 90%;
+    margin: auto;
 }
 .recipe img {
-    width: 250px;
+    width: 100%;
     height: 250px;
     object-fit: cover;
     object-position: center;
+    margin: auto;
+    display: block;
   }
+  .ingredients-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+.recipe {
+    width: 90%;
+    border-radius: 3px;
+    box-shadow: 5px 5px 12px #90909061;
+}
+
+.block {
+    padding: 2em;
+}

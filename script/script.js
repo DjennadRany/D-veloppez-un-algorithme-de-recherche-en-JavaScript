@@ -1,9 +1,11 @@
+// Code JavaScript pour la recherche des recettes en prenant en compte les fautes d'orthographe et les ingrédients
+// Note : Ce code est un exemple de base et doit être développé selon les besoins spécifiques
+
 class RecipeApp {
     constructor() {
       this.recipes = [];
       this.resultsContainer = document.getElementById('results');
       this.searchInput = document.getElementById('main-search-input');
-      this.filterSelect = document.getElementById('filter-select');
   
       this.loadRecipes();
       this.addEventListeners();
@@ -24,37 +26,52 @@ class RecipeApp {
     addEventListeners() {
       this.searchInput.addEventListener('input', () => {
         const searchTerm = this.searchInput.value.trim();
-        const filterType = this.filterSelect.value;
-        const filteredRecipes = this.searchAndFilterRecipes(searchTerm, filterType);
+        const filteredRecipes = this.searchRecipes(searchTerm);
         this.displayRecipes(filteredRecipes);
       });
     }
   
-    searchAndFilterRecipes(searchTerm, filterType) {
+    searchRecipes(searchTerm) {
+      const lowerCaseSearchTerm = searchTerm.toLowerCase();
       return this.recipes.filter(recipe => {
-        const lowerCaseSearchTerm = searchTerm.toLowerCase();
-  
-        if (filterType === 'ingredients') {
-          return recipe.ingredients.some(ingredient =>
-            ingredient.ingredient.toLowerCase().includes(lowerCaseSearchTerm)
-          );
-        } else if (filterType === 'utensils') {
-          return recipe.ustensils.some(utensil =>
-            utensil.toLowerCase().includes(lowerCaseSearchTerm)
-          );
-        } else if (filterType === 'appliance') {
-          return recipe.appliance.toLowerCase().includes(lowerCaseSearchTerm);
-        } else {
-          const searchFields = [
-            recipe.name.toLowerCase(),
-            recipe.description.toLowerCase(),
-            ...recipe.ingredients.map(ingredient => ingredient.ingredient.toLowerCase()),
-            ...recipe.ustensils.map(utensil => utensil.toLowerCase()),
-            recipe.appliance.toLowerCase()
-          ];
-          return searchFields.some(field => field.includes(lowerCaseSearchTerm));
-        }
+        const searchFields = [
+          recipe.name.toLowerCase(),
+          recipe.description.toLowerCase(),
+          ...recipe.ingredients.map(ingredient => ingredient.ingredient.toLowerCase())
+        ];
+        return searchFields.some(field => this.fuzzySearch(field, lowerCaseSearchTerm));
       });
+    }
+  
+    fuzzySearch(str, searchTerm) {
+      const strLength = str.length;
+      const searchTermLength = searchTerm.length;
+  
+      if (searchTermLength > strLength) {
+        return false;
+      }
+  
+      if (searchTermLength === strLength) {
+        return str === searchTerm;
+      }
+  
+      for (let i = 0; i <= strLength - searchTermLength; i++) {
+        let matchCount = 0;
+  
+        for (let j = 0; j < searchTermLength; j++) {
+          if (str[i + j] === searchTerm[j]) {
+            matchCount++;
+          }
+        }
+  
+        const matchPercentage = (matchCount / searchTermLength) * 100;
+  
+        if (matchPercentage >= 75) {
+          return true;
+        }
+      }
+  
+      return false;
     }
   
     displayRecipes(recipes) {
@@ -66,25 +83,53 @@ class RecipeApp {
       }
   
       recipes.forEach(recipe => {
-        const recipeElement = document.createElement('div');
-        recipeElement.classList.add('recipe');
-  
-        const imageElement = document.createElement('img');
-        imageElement.src = `asset/img/${recipe.image}`;
-        imageElement.alt = recipe.name;
-        recipeElement.appendChild(imageElement);
-  
-        const titleElement = document.createElement('h3');
-        titleElement.textContent = recipe.name;
-        recipeElement.appendChild(titleElement);
-  
-        const descriptionElement = document.createElement('p');
-        descriptionElement.textContent = recipe.description;
-        recipeElement.appendChild(descriptionElement);
-  
+        const recipeElement = this.createRecipeElement(recipe);
         this.resultsContainer.appendChild(recipeElement);
       });
     }
+    createRecipeElement(recipe) {
+        const template = `
+          <div class="recipe">
+            <img src="asset/img/${recipe.image}" alt="${recipe.name}">
+            <div class="block">
+            <h3>${recipe.name}</h3>
+            <p>${recipe.description}</p>
+          
+            <h4>Ingrédients:</h4>
+            <div class="ingredients-list">
+              <ul class="ingredients-column">
+                ${recipe.ingredients
+                  .slice(0, Math.ceil(recipe.ingredients.length / 2))
+                  .map(ingredient => `
+                    <li>
+                      <p>${ingredient.ingredient}</p>
+                      ${ingredient.quantity ? `<p>${ingredient.quantity} ${ingredient.unit || ''}</p>` : ''}
+                    </li>
+                  `)
+                  .join('')}
+              </ul>
+              <ul class="ingredients-column">
+                ${recipe.ingredients
+                  .slice(Math.ceil(recipe.ingredients.length / 2))
+                  .map(ingredient => `
+                    <li>
+                      <p>${ingredient.ingredient}</p>
+                      ${ingredient.quantity ? `<p>${ingredient.quantity} ${ingredient.unit || ''}</p>` : ''}
+                    </li>
+                  `)
+                  .join('')}
+              </ul>
+              </div>
+            </div>
+          </div>
+        `;
+    
+        const recipeElement = document.createElement('div');
+        recipeElement.innerHTML = template.trim();
+    
+        return recipeElement.firstChild;
+      }
+      
   }
   
   // Créer une instance de la classe RecipeApp
