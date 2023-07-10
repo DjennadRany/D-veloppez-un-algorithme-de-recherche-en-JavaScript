@@ -24,12 +24,12 @@ class RecipeApp {
     }
   
     addEventListeners() {
-      this.searchInput.addEventListener('input', () => {
-        const searchTerm = this.searchInput.value.trim();
-        const filteredRecipes = this.searchRecipes(searchTerm);
-        this.displayRecipes(filteredRecipes);
-      });
-    }
+        this.searchInput.addEventListener('input', () => {
+          const searchTerm = this.searchInput.value.trim();
+          const filteredRecipes = searchTerm ? this.searchRecipes(searchTerm) : this.recipes;
+          this.displayRecipes(filteredRecipes);
+        });
+      }
   
     searchRecipes(searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase();
@@ -90,9 +90,11 @@ class RecipeApp {
     createRecipeElement(recipe) {
         const template = `
           <div class="recipe">
+          <div class="time">${recipe.time} min</div>
             <img src="asset/img/${recipe.image}" alt="${recipe.name}">
             <div class="block">
-            <h3>${recipe.name}</h3>
+            <h3>${recipe.name}</h3><br>
+            <p>RECETTE</p>
             <p>${recipe.description}</p>
           
             <h4>Ingrédients:</h4>
@@ -102,7 +104,7 @@ class RecipeApp {
                   .slice(0, Math.ceil(recipe.ingredients.length / 2))
                   .map(ingredient => `
                     <li>
-                      <p>${ingredient.ingredient}</p>
+                      <p class="bol">${ingredient.ingredient}</p>
                       ${ingredient.quantity ? `<p>${ingredient.quantity} ${ingredient.unit || ''}</p>` : ''}
                     </li>
                   `)
@@ -113,7 +115,7 @@ class RecipeApp {
                   .slice(Math.ceil(recipe.ingredients.length / 2))
                   .map(ingredient => `
                     <li>
-                      <p>${ingredient.ingredient}</p>
+                      <p class="bol">${ingredient.ingredient}</p>
                       ${ingredient.quantity ? `<p>${ingredient.quantity} ${ingredient.unit || ''}</p>` : ''}
                     </li>
                   `)
