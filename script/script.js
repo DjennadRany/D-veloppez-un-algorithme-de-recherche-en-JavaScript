@@ -90,7 +90,7 @@ class RecipeApp {
     createRecipeElement(recipe) {
         const template = `
           <div class="recipe">
-          <div class="time">${recipe.time} min</div>
+          <p class="time">${recipe.time} min </p>
             <img src="asset/img/${recipe.image}" alt="${recipe.name}">
             <div class="block">
             <h3>${recipe.name}</h3><br>

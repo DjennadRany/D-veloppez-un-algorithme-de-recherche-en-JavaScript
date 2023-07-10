@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Anton', sans-serif;
     margin: 0;
     padding: 0;
 }
@@ -17,6 +17,16 @@ main {
 }
 h1 {
     color: white;
+}
+h2 {
+    color: #ffd15b;
+    margin: auto;
+    width: 50%;
+    font-size: 48px;
+    margin-top: 1em;
+}
+p{
+    font-family: 'Manrope', sans-serif;
 }
 #search-bar {
     display: flex;
