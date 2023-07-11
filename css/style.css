@@ -114,3 +114,29 @@ p.bol {
     top: -15em;
     left: -1em;
 }
+
+
+/* style.css */
+#selected-keywords-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.keyword-tag {
+    display: flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background-color: yellow;
+}
+
+.keyword-tag span {
+    margin-right: 4px;
+}
+
+.close-button {
+    margin-left: 8px;
+    cursor: pointer;
+}

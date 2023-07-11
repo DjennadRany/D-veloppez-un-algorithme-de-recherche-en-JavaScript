@@ -11,9 +11,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/css/selectize.default.min.css"
         integrity="sha512-pTaEn+6gF1IeWv3W1+7X7eM60TFu/agjgoHmYhAfLEU8Phuf6JKiiE8YmsNC0aCgQv4192s4Vai8YZ6VNM6vyQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/autoComplete.min.js"></script>
-
-
 </head>
 
 <body>
@@ -21,49 +18,43 @@
         <h1 style="display: none;">Les Petits Plats</h1>
 
         <img src="asset/img/Logo.png" alt="logo">
-        <h2>CHERCHEZ PARMI PLUS DE 1500 RECETTES DU QUOTIDIEN,SIMPLES ET DÉLICIEUSES</h2>
+        <h2>CHERCHEZ PARMI PLUS DE 1500 RECETTES DU QUOTIDIEN, SIMPLES ET DÉLICIEUSES</h2>
         <div id="search-bar">
             <input type="text" id="main-search-input" placeholder="Rechercher...">
-
         </div>
     </header>
 
     <main>
-
-
         <div class="filters">
             <div class="filter">
-<!-- Ingredients search datalist -->
-<input type="text" id="ingredients-search-input" list="ingredients-options" placeholder="Search ingredients">
-<datalist id="ingredients-options"></datalist>
+                <!-- Ingredients search datalist -->
+                <input type="text" id="ingredients-search-input" list="ingredients-options"
+                    placeholder="Search ingredients">
+                <datalist id="ingredients-options"></datalist>
 
-<!-- Utensils search datalist -->
-<input type="text" id="utensils-search-input" list="utensils-options" placeholder="Search utensils">
-<datalist id="utensils-options"></datalist>
+                <!-- Utensils search datalist -->
+                <input type="text" id="utensils-search-input" list="utensils-options" placeholder="Search utensils">
+                <datalist id="utensils-options"></datalist>
 
-<!-- Appliance search datalist -->
-<input type="text" id="appliance-search-input" list="appliance-options" placeholder="Search appliance">
-<datalist id="appliance-options"></datalist>
+                <!-- Appliance search datalist -->
+                <input type="text" id="appliance-search-input" list="appliance-options" placeholder="Search appliance">
+                <datalist id="appliance-options"></datalist>
 
-<!-- Keyword tags container -->
-<div id="keyword-tags-container">
-  <ul id="keyword-tags-list"></ul>
-</div>
-
-
+                <!-- Keyword tags container -->
+                <div id="selected-keywords-container">
+                    <ul id="keyword-tags-list"></ul>
+                </div>
+            </div>
             <br> <br> <br>
         </div>
-
-
 
         <div id="results">
             <!-- Résultats de recherche ici -->
         </div>
-
     </main>
 
     <script src="./script/app.js" type="module"></script>
-
+    <script src="./script/filter.js" type="module"></script>
 </body>
 
 </html>
