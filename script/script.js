@@ -1,4 +1,4 @@
-class RecipeApp {
+export class RecipeApp {
     constructor() {
         this.recipes = [];
         this.resultsContainer = document.getElementById('results');

@@ -2,12 +2,17 @@
 <html>
 
 <head>
-    <title>Projet HTML/CSS/JS - Cas d'utilisation #03</title>
+    <title>Les Petits Plats</title>
     <link rel="stylesheet" type="text/css" href="./css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/css/selectize.default.min.css"
+        integrity="sha512-pTaEn+6gF1IeWv3W1+7X7eM60TFu/agjgoHmYhAfLEU8Phuf6JKiiE8YmsNC0aCgQv4192s4Vai8YZ6VNM6vyQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/autoComplete.min.js"></script>
+
 
 </head>
 
@@ -28,19 +33,24 @@
 
         <div class="filters">
             <div class="filter">
-                <label for="ingredients-search-select">Ingrédients:</label>
-                <select id="ingredients-search-select">
-                    <option value="" disabled selected>Sélectionnez un ingrédient</option>
-                </select>
-                <label for="utensils-search-select">Ustensiles:</label>
-                <select id="utensils-search-select">
-                    <option value="" disabled selected>Sélectionnez un ustensile</option>
-                </select>
-                <label for="appliance-search-select">Appareil:</label>
-                <select id="appliance-search-select">
-                    <option value="" disabled selected>Sélectionnez un appareil</option>
-                </select>
-            </div>
+<!-- Ingredients search datalist -->
+<input type="text" id="ingredients-search-input" list="ingredients-options" placeholder="Search ingredients">
+<datalist id="ingredients-options"></datalist>
+
+<!-- Utensils search datalist -->
+<input type="text" id="utensils-search-input" list="utensils-options" placeholder="Search utensils">
+<datalist id="utensils-options"></datalist>
+
+<!-- Appliance search datalist -->
+<input type="text" id="appliance-search-input" list="appliance-options" placeholder="Search appliance">
+<datalist id="appliance-options"></datalist>
+
+<!-- Keyword tags container -->
+<div id="keyword-tags-container">
+  <ul id="keyword-tags-list"></ul>
+</div>
+
+
             <br> <br> <br>
         </div>
 
@@ -52,8 +62,8 @@
 
     </main>
 
-    <script src="./script/script.js" type="module"></script>
-    <script src="./script/filter.js" type="module"></script>
+    <script src="./script/app.js" type="module"></script>
+
 </body>
 
 </html>
