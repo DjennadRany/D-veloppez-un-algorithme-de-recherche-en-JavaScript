@@ -28,26 +28,29 @@
         <div class="filters">
             <div class="filter">
                 <!-- Ingredients search datalist -->
-                <input type="text" id="ingredients-search-input" list="ingredients-options"
-                    placeholder="Search ingredients">
-                <datalist id="ingredients-options"></datalist>
-
-                <!-- Utensils search datalist -->
-                <input type="text" id="utensils-search-input" list="utensils-options" placeholder="Search utensils">
-                <datalist id="utensils-options"></datalist>
-
-                <!-- Appliance search datalist -->
-                <input type="text" id="appliance-search-input" list="appliance-options" placeholder="Search appliance">
-                <datalist id="appliance-options"></datalist>
-
-                <!-- Keyword tags container -->
-                <div id="selected-keywords-container">
-                    <ul id="keyword-tags-list"></ul>
+                <div class="container">
+                    <input type="text" id="ingredients-search-input" list="ingredients-options" placeholder="Search ingredients">
+                    <datalist id="ingredients-options"></datalist>
                 </div>
+                <!-- Utensils search datalist -->
+                <div class="container">
+                    <input type="text" id="utensils-search-input" list="utensils-options" placeholder="Search utensils">
+                    <datalist id="utensils-options"></datalist>
+                </div>
+                <!-- Appliance search datalist -->
+                <div class="container">
+                    <input type="text" id="appliance-search-input" list="appliance-options" placeholder="Search appliance">
+                    <datalist id="appliance-options"></datalist>
+                </div><br>  <br> <br> <br>
+                <!-- Keyword tags container -->
+                
             </div>
-            <br> <br> <br>
+           
         </div>
-
+        
+ <div id="selected-keywords-container">
+                <ul id="keyword-tags-list"></ul>
+            </div>
         <div id="results">
             <!-- Résultats de recherche ici -->
         </div>
