@@ -197,6 +197,8 @@ export class RecipeFilters {
   
     const self = this;
   
+  // Tri des options par ordre alphabétique
+
 
   // Ajouter les écouteurs d'événements "focus" et "click" pour afficher les suggestions
   ingredientsInput.addEventListener('focus', showAllOptions);
@@ -207,6 +209,9 @@ export class RecipeFilters {
 
   applianceInput.addEventListener('focus', showAllOptions);
   applianceInput.addEventListener('click', showAllOptions);
+
+
+
 
   function showAllOptions() {
     const awesompleteInstance = this.nextElementSibling.awesomplete;
@@ -257,7 +262,6 @@ export class RecipeFilters {
   
   
   
-
   addOptionToDatalist(datalistId, value) {
     const datalist = document.getElementById(datalistId);
     const optionElement = document.createElement('option');
