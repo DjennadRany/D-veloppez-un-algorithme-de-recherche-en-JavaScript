@@ -164,7 +164,7 @@ export class RecipeFilters {
     const ingredients = [];
     const utensils = [];
     const appliances = [];
-
+  
     this.recipes.forEach(recipe => {
       recipe.ingredients.forEach(ingredient => {
         const lowerCaseIngredient = ingredient.ingredient.toLowerCase();
@@ -173,7 +173,7 @@ export class RecipeFilters {
           this.addOptionToDatalist('ingredients-options', lowerCaseIngredient);
         }
       });
-
+  
       recipe.ustensils.forEach(utensil => {
         const lowerCaseUtensil = utensil.toLowerCase();
         if (!utensils.includes(lowerCaseUtensil)) {
@@ -181,16 +181,56 @@ export class RecipeFilters {
           this.addOptionToDatalist('utensils-options', lowerCaseUtensil);
         }
       });
-
+  
       const lowerCaseAppliance = recipe.appliance.toLowerCase();
       if (!appliances.includes(lowerCaseAppliance)) {
         appliances.push(lowerCaseAppliance);
         this.addOptionToDatalist('appliance-options', lowerCaseAppliance);
       }
     });
-
-    
+  
+    const ingredientsInput = document.getElementById('ingredients-search-input');
+    const utensilsInput = document.getElementById('utensils-search-input');
+    const applianceInput = document.getElementById('appliance-search-input');
+  
+    const self = this;
+  
+    new Awesomplete(ingredientsInput, {
+      list: ingredients,
+      minChars: 1,
+      maxItems: 5,
+      autoFirst: true,
+      replace: function (text) {
+        self.addSelectedKeyword(text.value);
+        this.input.value = '';
+      }
+    });
+  
+    new Awesomplete(utensilsInput, {
+      list: utensils,
+      minChars: 1,
+      maxItems: 5,
+      autoFirst: true,
+      replace: function (text) {
+        self.addSelectedKeyword(text.value);
+        this.input.value = '';
+      }
+    });
+  
+    new Awesomplete(applianceInput, {
+      list: appliances,
+      minChars: 1,
+      maxItems: 5,
+      autoFirst: true,
+      replace: function (text) {
+        self.addSelectedKeyword(text.value);
+        this.input.value = '';
+      }
+    });
   }
+  
+  
+  
 
   addOptionToDatalist(datalistId, value) {
     const datalist = document.getElementById(datalistId);
@@ -416,6 +456,11 @@ updateKeywordOptions() {
   }
 }
 
+
+
+
+
+////// the end //////
 }
 
 

@@ -139,21 +139,23 @@ p.bol {
 .close-button {
     margin-left: 8px;
     cursor: pointer;
+}.container {
+    position: relative;
+  }.filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
 }
-.filters {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .filter {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .container {
+
+.filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.input-container {
   position: relative;
 }
 
@@ -165,11 +167,14 @@ input[type="text"] {
   width: 300px;
 }
 
-.datalist {
+.awesomplete-wrapper {
   position: absolute;
   top: 100%;
   left: 0;
   width: 100%;
+}
+
+.awesomplete-list {
   background-color: #fff;
   border: 1px solid #ccc;
   border-top: none;
@@ -180,14 +185,20 @@ input[type="text"] {
   margin: 0;
   max-height: 200px;
   overflow-y: auto;
-  z-index: 1;
 }
 
-.datalist-option {
+.awesomplete-list-item {
   padding: 8px 10px;
   cursor: pointer;
 }
 
-.datalist-option:hover {
+.awesomplete-list-item:hover {
   background-color: #f2f2f2;
+}
+span.visually-hidden {
+    display: none;
+}
+
+ul{
+    list-style: none;
 }
