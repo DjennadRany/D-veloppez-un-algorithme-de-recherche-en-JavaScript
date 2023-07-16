@@ -88,7 +88,9 @@ export class RecipeFilters {
       }
       
     
-    
+  
+      
+      
 
     this.selectedKeywords.push(keyword);
     this.applyFilters();
@@ -237,7 +239,13 @@ export class RecipeFilters {
     const optionElement = document.createElement('option');
     optionElement.value = value;
     datalist.appendChild(optionElement);
+  
+    // Tri des options par ordre alphabétique
+    const options = Array.from(datalist.getElementsByTagName('option')).sort((a, b) => a.value.localeCompare(b.value));
+    datalist.innerHTML = '';
+    options.forEach(option => datalist.appendChild(option));
   }
+  
 
   updateKeywordOptions() {
     const ingredientsOptions = document.getElementById('ingredients-options');
@@ -423,7 +431,6 @@ updateKeywordOptions() {
       const lowerCaseIngredient = ingredient.ingredient.toLowerCase();
       if (!selectedKeywordsLower.includes(lowerCaseIngredient) && !allIngredients.includes(lowerCaseIngredient)) {
         allIngredients.push(lowerCaseIngredient);
-        this.addOptionToDatalist('ingredients-options', lowerCaseIngredient);
       }
     });
 
@@ -431,16 +438,24 @@ updateKeywordOptions() {
       const lowerCaseUtensil = utensil.toLowerCase();
       if (!selectedKeywordsLower.includes(lowerCaseUtensil) && !allUtensils.includes(lowerCaseUtensil)) {
         allUtensils.push(lowerCaseUtensil);
-        this.addOptionToDatalist('utensils-options', lowerCaseUtensil);
       }
     });
 
     const lowerCaseAppliance = recipe.appliance.toLowerCase();
     if (!selectedKeywordsLower.includes(lowerCaseAppliance) && !allAppliances.includes(lowerCaseAppliance)) {
       allAppliances.push(lowerCaseAppliance);
-      this.addOptionToDatalist('appliance-options', lowerCaseAppliance);
     }
   });
+
+  // Trier les options par ordre alphabétique
+  allIngredients.sort((a, b) => a.localeCompare(b));
+  allUtensils.sort((a, b) => a.localeCompare(b));
+  allAppliances.sort((a, b) => a.localeCompare(b));
+
+  // Ajouter les options de mots-clés triées
+  allIngredients.forEach(ingredient => this.addOptionToDatalist('ingredients-options', ingredient));
+  allUtensils.forEach(utensil => this.addOptionToDatalist('utensils-options', utensil));
+  allAppliances.forEach(appliance => this.addOptionToDatalist('appliance-options', appliance));
 
   // Vérifier si un mot-clé a été retiré de #keyword-tags-list
   const keywordTagsList = document.getElementById('keyword-tags-list');
@@ -455,6 +470,7 @@ updateKeywordOptions() {
     this.recipeApp.displayRecipes(this.recipes);
   }
 }
+
 
 
 
