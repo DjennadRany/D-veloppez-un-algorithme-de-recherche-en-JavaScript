@@ -202,3 +202,18 @@ span.visually-hidden {
 ul{
     list-style: none;
 }
+
+.suggestion-list{
+
+    list-style: none;
+    background: #f8f8f8;
+    z-index: 2;
+    
+    position: absolute;
+    top: 1em;
+    width: 89.5%;
+    padding: 1em;
+    box-shadow: 0px 7px 13px #40404047;
+    border: 1px solid #d1d1d1;
+    border-top: none;
+}

@@ -197,38 +197,62 @@ export class RecipeFilters {
   
     const self = this;
   
-    new Awesomplete(ingredientsInput, {
-      list: ingredients,
-      minChars: 1,
-      maxItems: 5,
-      autoFirst: true,
-      replace: function (text) {
-        self.addSelectedKeyword(text.value);
-        this.input.value = '';
-      }
-    });
-  
-    new Awesomplete(utensilsInput, {
-      list: utensils,
-      minChars: 1,
-      maxItems: 5,
-      autoFirst: true,
-      replace: function (text) {
-        self.addSelectedKeyword(text.value);
-        this.input.value = '';
-      }
-    });
-  
-    new Awesomplete(applianceInput, {
-      list: appliances,
-      minChars: 1,
-      maxItems: 5,
-      autoFirst: true,
-      replace: function (text) {
-        self.addSelectedKeyword(text.value);
-        this.input.value = '';
-      }
-    });
+
+  // Ajouter les écouteurs d'événements "focus" et "click" pour afficher les suggestions
+  ingredientsInput.addEventListener('focus', showAllOptions);
+  ingredientsInput.addEventListener('click', showAllOptions);
+
+  utensilsInput.addEventListener('focus', showAllOptions);
+  utensilsInput.addEventListener('click', showAllOptions);
+
+  applianceInput.addEventListener('focus', showAllOptions);
+  applianceInput.addEventListener('click', showAllOptions);
+
+  function showAllOptions() {
+    const awesompleteInstance = this.nextElementSibling.awesomplete;
+    awesompleteInstance.evaluate();
+    awesompleteInstance.open();
+  }
+
+  new Awesomplete(ingredientsInput, {
+    list: ingredients,
+    minChars: 1,
+    maxItems: 5,
+    autoFirst: true,
+    replace: function (text) {
+      self.addSelectedKeyword(text.value);
+      this.input.value = '';
+    }
+  });
+
+  new Awesomplete(utensilsInput, {
+    list: utensils,
+    minChars: 1,
+    maxItems: 5,
+    autoFirst: true,
+    replace: function (text) {
+      self.addSelectedKeyword(text.value);
+      this.input.value = '';
+    }
+  });
+
+  new Awesomplete(applianceInput, {
+    list: appliances,
+    minChars: 1,
+    maxItems: 5,
+    autoFirst: true,
+    replace: function (text) {
+      self.addSelectedKeyword(text.value);
+      this.input.value = '';
+    }
+  });
+  const ulElement = document.getElementById('awesomplete_list_1');
+  ulElement.classList.add('suggestion-list');
+  const ulElement2 = document.getElementById('awesomplete_list_2');
+  ulElement2.classList.add('suggestion-list');
+  const ulElement3 = document.getElementById('awesomplete_list_3');
+  ulElement3.classList.add('suggestion-list');
+
   }
   
   
