@@ -222,29 +222,29 @@ export class RecipeFilters {
   new Awesomplete(ingredientsInput, {
     list: ingredients,
     minChars: 1,
-    maxItems: 5,
+    maxItems: ingredients.length, // Utiliser la longueur totale de la liste d'ingrédients
     autoFirst: true,
     replace: function (text) {
       self.addSelectedKeyword(text.value);
       this.input.value = '';
     }
   });
-
+  
   new Awesomplete(utensilsInput, {
     list: utensils,
     minChars: 1,
-    maxItems: 5,
+    maxItems: utensils.length, // Utiliser la longueur totale de la liste d'ustensiles
     autoFirst: true,
     replace: function (text) {
       self.addSelectedKeyword(text.value);
       this.input.value = '';
     }
   });
-
+  
   new Awesomplete(applianceInput, {
     list: appliances,
     minChars: 1,
-    maxItems: 5,
+    maxItems: appliances.length, // Utiliser la longueur totale de la liste d'appareils
     autoFirst: true,
     replace: function (text) {
       self.addSelectedKeyword(text.value);
@@ -258,6 +258,8 @@ export class RecipeFilters {
   const ulElement3 = document.getElementById('awesomplete_list_3');
   ulElement3.classList.add('suggestion-list');
 
+
+  
   }
   
   
