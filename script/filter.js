@@ -9,9 +9,10 @@ export class RecipeFilters {
     this.applianceInput = document.getElementById('appliance-search-input');
     this.keywordTagsList = document.getElementById('keyword-tags-list');
     this.selectedKeywords = [];
+    
 
     this.loadRecipes().then(() => {
-      this.populateFilters();
+      this.updateFiltersAndOptions();
       this.addEventListeners();
     });
   }
@@ -93,57 +94,34 @@ export class RecipeFilters {
       
 
     this.selectedKeywords.push(keyword);
-    this.applyFilters();
+    this.applyKeywordsFilter();
     this.createKeywordTag(keyword);
-    this.updateKeywordOptions();
+    this.updateFiltersAndOptions();
   }
 
-  applyFilters() {
-    let filteredRecipes = [];
 
-    if (this.selectedKeywords.length === 0) {
+  checkFiltersAndDisplayRecipes() {
+    const ingredientsInputValue = this.ingredientsInput.value.trim();
+    const utensilsInputValue = this.utensilsInput.value.trim();
+    const applianceInputValue = this.applianceInput.value.trim();
+    const keywordTags = this.keywordTagsList.getElementsByTagName('li');
+  
+    // Vérifier si aucun mot-clé n'est sélectionné, ou si tous les champs de recherche sont vides, afficher toutes les recettes
+    if (
+      this.selectedKeywords.length === 0 ||
+      (ingredientsInputValue === '' && utensilsInputValue === '' && applianceInputValue === '' && keywordTags.length === 0)
+    ) {
       this.recipeApp.displayRecipes(this.recipes);
-      return;
-    }else {
-      filteredRecipes = this.recipes.filter(recipe => {
-        return this.selectedKeywords.every(keyword => {
-          return (
-            recipe.name.toLowerCase().includes(keyword) ||
-            recipe.description.toLowerCase().includes(keyword) ||
-            recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(keyword)) ||
-            recipe.ustensils.some(utensil => utensil.toLowerCase().includes(keyword)) ||
-            recipe.appliance.toLowerCase().includes(keyword)
-          );
-        });
-      });
+    } else {
+      // Appliquer les filtres et afficher les recettes filtrées
+      this.applyKeywordsFilter();
     }
-
-    this.recipeApp.displayRecipes(filteredRecipes);
-    this.updateKeywordOptions();
   }
 
-  createKeywordTag(keyword) {
-    const keywordTag = document.createElement('li');
-    keywordTag.textContent = keyword;
-
-    const closeButton = document.createElement('button');
-    closeButton.className = 'close-button';
-    closeButton.innerHTML = '&times;';
-
-    const self = this;
-
-    closeButton.addEventListener('click', function () {
-      const keywordToRemove = keywordTag.textContent.trim();
-      self.removeKeywordTag(keywordToRemove);
-    });
-
-    keywordTag.appendChild(closeButton);
-    this.keywordTagsList.appendChild(keywordTag);
-  }
 
   removeKeywordTag(keyword) {
     this.selectedKeywords = this.selectedKeywords.filter(kw => kw !== keyword);
-    this.applyFilters();
+    this.applyKeywordsFilter();
 
     const keywordTags = this.keywordTagsList.getElementsByTagName('li');
 
@@ -159,108 +137,112 @@ export class RecipeFilters {
       return;
     }
     
-    this.updateKeywordOptions();
+    this.applyKeywordsFilter();
+    this.updateFiltersAndOptions();
   }
 
-  populateFilters() {
-    const ingredients = [];
-    const utensils = [];
-    const appliances = [];
+
+  
+  updateFiltersAndOptions() {
+    const selectedKeywordsLower = this.selectedKeywords.map(kw => kw.toLowerCase());
+  
+
+    // Récupérer les datalists
+    const ingredientsDatalist = document.getElementById('ingredients-options');
+    const utensilsDatalist = document.getElementById('utensils-options');
+    const applianceDatalist = document.getElementById('appliance-options');
+  
+    // Garder une copie des options actuelles avant de les vider
+    const existingIngredientsOptions = Array.from(ingredientsDatalist.getElementsByTagName('option'));
+    const existingUtensilsOptions = Array.from(utensilsDatalist.getElementsByTagName('option'));
+    const existingApplianceOptions = Array.from(applianceDatalist.getElementsByTagName('option'));
+  
+    // Vider les datalists avant d'ajouter les nouvelles options triées
+    ingredientsDatalist.innerHTML = '';
+    utensilsDatalist.innerHTML = '';
+    applianceDatalist.innerHTML = '';
+  
+    // Créer les tableaux pour stocker les options actuelles
+    const allIngredients = [];
+    const allUtensils = [];
+    const allAppliances = [];
   
     this.recipes.forEach(recipe => {
       recipe.ingredients.forEach(ingredient => {
         const lowerCaseIngredient = ingredient.ingredient.toLowerCase();
-        if (!ingredients.includes(lowerCaseIngredient)) {
-          ingredients.push(lowerCaseIngredient);
-          this.addOptionToDatalist('ingredients-options', lowerCaseIngredient);
+        if (!selectedKeywordsLower.includes(lowerCaseIngredient) && !allIngredients.includes(lowerCaseIngredient)) {
+          allIngredients.push(lowerCaseIngredient);
         }
       });
   
       recipe.ustensils.forEach(utensil => {
         const lowerCaseUtensil = utensil.toLowerCase();
-        if (!utensils.includes(lowerCaseUtensil)) {
-          utensils.push(lowerCaseUtensil);
-          this.addOptionToDatalist('utensils-options', lowerCaseUtensil);
+        if (!selectedKeywordsLower.includes(lowerCaseUtensil) && !allUtensils.includes(lowerCaseUtensil)) {
+          allUtensils.push(lowerCaseUtensil);
         }
       });
   
       const lowerCaseAppliance = recipe.appliance.toLowerCase();
-      if (!appliances.includes(lowerCaseAppliance)) {
-        appliances.push(lowerCaseAppliance);
-        this.addOptionToDatalist('appliance-options', lowerCaseAppliance);
+      if (!selectedKeywordsLower.includes(lowerCaseAppliance) && !allAppliances.includes(lowerCaseAppliance)) {
+        allAppliances.push(lowerCaseAppliance);
       }
     });
   
+    // Concaténer les nouvelles options triées avec les options existantes
+    const allIngredientsOptions = existingIngredientsOptions.concat(allIngredients.map(ingredient => {
+      const optionElement = document.createElement('option');
+      optionElement.value = ingredient;
+      return optionElement;
+    }));
+  
+    const allUtensilsOptions = existingUtensilsOptions.concat(allUtensils.map(utensil => {
+      const optionElement = document.createElement('option');
+      optionElement.value = utensil;
+      return optionElement;
+    }));
+  
+    const allAppliancesOptions = existingApplianceOptions.concat(allAppliances.map(appliance => {
+      const optionElement = document.createElement('option');
+      optionElement.value = appliance;
+      return optionElement;
+    }));
+  
+    // Ajouter les options de mots-clés triées
+    allIngredientsOptions.forEach(option => ingredientsDatalist.appendChild(option));
+    allUtensilsOptions.forEach(option => utensilsDatalist.appendChild(option));
+    allAppliancesOptions.forEach(option => applianceDatalist.appendChild(option));
+  
+    // ...
+  
+    // Mettre à jour les objets Awesomplete avec les nouvelles options
     const ingredientsInput = document.getElementById('ingredients-search-input');
     const utensilsInput = document.getElementById('utensils-search-input');
     const applianceInput = document.getElementById('appliance-search-input');
   
-    const self = this;
+    new Awesomplete(ingredientsInput, {
+      list: allIngredients,
+      // ...
+    });
   
-  // Tri des options par ordre alphabétique
-
-
-  // Ajouter les écouteurs d'événements "focus" et "click" pour afficher les suggestions
-  ingredientsInput.addEventListener('focus', showAllOptions);
-  ingredientsInput.addEventListener('click', showAllOptions);
-
-  utensilsInput.addEventListener('focus', showAllOptions);
-  utensilsInput.addEventListener('click', showAllOptions);
-
-  applianceInput.addEventListener('focus', showAllOptions);
-  applianceInput.addEventListener('click', showAllOptions);
-
-
-
-
-  function showAllOptions() {
-    const awesompleteInstance = this.nextElementSibling.awesomplete;
-    awesompleteInstance.evaluate();
-    awesompleteInstance.open();
+    new Awesomplete(utensilsInput, {
+      list: allUtensils,
+      // ...
+    });
+  
+    new Awesomplete(applianceInput, {
+      list: allAppliances,
+      // ...
+    });
+    // Récupérer les ul générés par Awesomplete
+  const awesompleteLists = document.querySelectorAll('[id^="awesomplete_list_"]');
+  
+  // Ajouter la classe "suggestion-list" aux ul
+  awesompleteLists.forEach(ulElement => {
+    ulElement.classList.add('suggestion-list');
+  });
+    // ...
   }
-
-  new Awesomplete(ingredientsInput, {
-    list: ingredients,
-    minChars: 1,
-    maxItems: ingredients.length, // Utiliser la longueur totale de la liste d'ingrédients
-    autoFirst: true,
-    replace: function (text) {
-      self.addSelectedKeyword(text.value);
-      this.input.value = '';
-    }
-  });
   
-  new Awesomplete(utensilsInput, {
-    list: utensils,
-    minChars: 1,
-    maxItems: utensils.length, // Utiliser la longueur totale de la liste d'ustensiles
-    autoFirst: true,
-    replace: function (text) {
-      self.addSelectedKeyword(text.value);
-      this.input.value = '';
-    }
-  });
-  
-  new Awesomplete(applianceInput, {
-    list: appliances,
-    minChars: 1,
-    maxItems: appliances.length, // Utiliser la longueur totale de la liste d'appareils
-    autoFirst: true,
-    replace: function (text) {
-      self.addSelectedKeyword(text.value);
-      this.input.value = '';
-    }
-  });
-  const ulElement = document.getElementById('awesomplete_list_1');
-  ulElement.classList.add('suggestion-list');
-  const ulElement2 = document.getElementById('awesomplete_list_2');
-  ulElement2.classList.add('suggestion-list');
-  const ulElement3 = document.getElementById('awesomplete_list_3');
-  ulElement3.classList.add('suggestion-list');
-
-
-  
-  }
   
   
   
@@ -277,94 +259,25 @@ export class RecipeFilters {
   }
   
 
-  updateKeywordOptions() {
-    const ingredientsOptions = document.getElementById('ingredients-options');
-    const utensilsOptions = document.getElementById('utensils-options');
-    const applianceOptions = document.getElementById('appliance-options');
 
-    // Réinitialiser les options de mots-clés
-    ingredientsOptions.innerHTML = '';
-    utensilsOptions.innerHTML = '';
-    applianceOptions.innerHTML = '';
 
-    // Ajouter les options de mots-clés non sélectionnés
-    const selectedKeywordsLower = this.selectedKeywords.map(kw => kw.toLowerCase());
-    const allIngredients = [];
-    const allUtensils = [];
-    const allAppliances = [];
 
-    this.recipes.forEach(recipe => {
-      recipe.ingredients.forEach(ingredient => {
-        const lowerCaseIngredient = ingredient.ingredient.toLowerCase();
-        if (!selectedKeywordsLower.includes(lowerCaseIngredient) && !allIngredients.includes(lowerCaseIngredient)) {
-          allIngredients.push(lowerCaseIngredient);
-          this.addOptionToDatalist('ingredients-options', lowerCaseIngredient);
-        }
-      });
 
-      recipe.ustensils.forEach(utensil => {
-        const lowerCaseUtensil = utensil.toLowerCase();
-        if (!selectedKeywordsLower.includes(lowerCaseUtensil) && !allUtensils.includes(lowerCaseUtensil)) {
-          allUtensils.push(lowerCaseUtensil);
-          this.addOptionToDatalist('utensils-options', lowerCaseUtensil);
-        }
-      });
+  
 
-      const lowerCaseAppliance = recipe.appliance.toLowerCase();
-      if (!selectedKeywordsLower.includes(lowerCaseAppliance) && !allAppliances.includes(lowerCaseAppliance)) {
-        allAppliances.push(lowerCaseAppliance);
-        this.addOptionToDatalist('appliance-options', lowerCaseAppliance);
-      }
-    });
-  }
 
- checkFilters() {
-  if (this.selectedKeywords.length === 0) {
-    this.recipeApp.displayRecipes(this.recipes);
-  } else {
-    const filteredRecipes = this.recipes.filter(recipe => {
-      return this.selectedKeywords.every(keyword => {
-        return (
-          recipe.name.toLowerCase().includes(keyword) ||
-          recipe.description.toLowerCase().includes(keyword) ||
-          recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(keyword)) ||
-          recipe.ustensils.some(utensil => utensil.toLowerCase().includes(keyword)) ||
-          recipe.appliance.toLowerCase().includes(keyword)
-        );
-      });
-    });
-    this.recipeApp.displayRecipes(filteredRecipes);
-  }
-}
  removeAllKeywords() {
   this.selectedKeywords = [];
   this.resetContent();
 }
 resetContent() {
   this.keywordTagsList.innerHTML = '';
-  this.applyFilters();
-  this.updateKeywordOptions();
+  this.applyKeywordsFilter();
+  this.updateFiltersAndOptions();
 }
-checkEmptyInputs() {
-  const ingredientsInputValue = this.ingredientsInput.value.trim();
-  const utensilsInputValue = this.utensilsInput.value.trim();
-  const applianceInputValue = this.applianceInput.value.trim();
 
-  if (ingredientsInputValue === '' && utensilsInputValue === '' && applianceInputValue === '') {
-    this.recipeApp.displayRecipes(this.recipes);
-  }
-}
- checkNoKeywords() {
-  if (this.selectedKeywords.length === 0) {
-    this.recipeApp.displayRecipes(this.recipes);
-  }
-}
- checkEmptyTagsList() {
-  const keywordTags = this.keywordTagsList.getElementsByTagName('li');
-  if (keywordTags.length === 0) {
-    this.recipeApp.displayRecipes(this.recipes);
-  }
-}
+
+
  addSelectizeOptions(inputElement, options) {
   const selectize = $(inputElement).selectize({
     create: false,
@@ -391,24 +304,61 @@ removeSelectedKeyword(keyword) {
   this.selectedKeywords = this.selectedKeywords.filter(kw => kw !== keyword);
 
   // Filtrer les recettes en fonction des mots-clés restants
-  this.applyFilters();
+  this.applyKeywordsFilter();
 
   // Mettre à jour l'affichage des mots-clés et des options de mots-clés
   this.updateKeywordTags();
-  this.updateKeywordOptions();
+  this.updateFiltersAndOptions();
 }
 
-applyFilters() {
-  let filteredRecipes = [];
+ 
+// ... autres méthodes de la classe ...
 
-  // Si aucun mot-clé n'est sélectionné, afficher toutes les recettes
+updateKeywordTags() {
+  // Mettre à jour l'affichage des mots-clés sélectionnés
+  this.keywordTagsList.innerHTML = '';
+
+  this.selectedKeywords.forEach(keyword => {
+    this.createKeywordTag(keyword);
+  });
+}
+
+createKeywordTag(keyword) {
+  const keywordTag = document.createElement('li');
+  keywordTag.textContent = keyword;
+
+  const closeButton = document.createElement('button');
+  closeButton.className = 'close-button';
+  closeButton.innerHTML = '&times;';
+
+  const self = this;
+
+  closeButton.addEventListener('click', function () {
+    const keywordToRemove = keywordTag.textContent.trim();
+    self.removeKeywordTag(keywordToRemove);
+  });
+
+  keywordTag.appendChild(closeButton);
+  this.keywordTagsList.appendChild(keywordTag);
+}
+
+// ... autres méthodes de la classe ...
+
+
+
+
+
+
+
+
+
+applyKeywordsFilter() {
   if (this.selectedKeywords.length === 0) {
     this.recipeApp.displayRecipes(this.recipes);
     return;
   }
 
-  // Filtrer les recettes en fonction des mots-clés restants
-  filteredRecipes = this.recipes.filter(recipe => {
+  const filteredRecipes = this.recipes.filter(recipe => {
     return this.selectedKeywords.every(keyword => {
       return (
         recipe.name.toLowerCase().includes(keyword) ||
@@ -420,96 +370,14 @@ applyFilters() {
     });
   });
 
-  // Afficher les recettes filtrées
   this.recipeApp.displayRecipes(filteredRecipes);
 }
 
-updateKeywordTags() {
-  // Mettre à jour l'affichage des mots-clés sélectionnés
-  this.keywordTagsList.innerHTML = '';
-
-  this.selectedKeywords.forEach(keyword => {
-    this.createKeywordTag(keyword);
-  });
-
-  // Si aucun mot-clé n'est sélectionné, réinitialiser le contenu
-  if (this.selectedKeywords.length === 0) {
-    this.resetContent();
-    return;
-  }
-}
-updateKeywordOptions() {
-  // Mettre à jour les options de mots-clés en fonction des mots-clés restants
-  const selectedKeywordsLower = this.selectedKeywords.map(kw => kw.toLowerCase());
-
-  const ingredientsOptions = document.getElementById('ingredients-options');
-  const utensilsOptions = document.getElementById('utensils-options');
-  const applianceOptions = document.getElementById('appliance-options');
-
-  // Réinitialiser les options de mots-clés
-  ingredientsOptions.innerHTML = '';
-  utensilsOptions.innerHTML = '';
-  applianceOptions.innerHTML = '';
-
-  // Ajouter les options de mots-clés non sélectionnés
-  const allIngredients = [];
-  const allUtensils = [];
-  const allAppliances = [];
-
-  this.recipes.forEach(recipe => {
-    recipe.ingredients.forEach(ingredient => {
-      const lowerCaseIngredient = ingredient.ingredient.toLowerCase();
-      if (!selectedKeywordsLower.includes(lowerCaseIngredient) && !allIngredients.includes(lowerCaseIngredient)) {
-        allIngredients.push(lowerCaseIngredient);
-      }
-    });
-
-    recipe.ustensils.forEach(utensil => {
-      const lowerCaseUtensil = utensil.toLowerCase();
-      if (!selectedKeywordsLower.includes(lowerCaseUtensil) && !allUtensils.includes(lowerCaseUtensil)) {
-        allUtensils.push(lowerCaseUtensil);
-      }
-    });
-
-    const lowerCaseAppliance = recipe.appliance.toLowerCase();
-    if (!selectedKeywordsLower.includes(lowerCaseAppliance) && !allAppliances.includes(lowerCaseAppliance)) {
-      allAppliances.push(lowerCaseAppliance);
-    }
-  });
-
-  // Trier les options par ordre alphabétique
-  allIngredients.sort((a, b) => a.localeCompare(b));
-  allUtensils.sort((a, b) => a.localeCompare(b));
-  allAppliances.sort((a, b) => a.localeCompare(b));
-
-  // Ajouter les options de mots-clés triées
-  allIngredients.forEach(ingredient => this.addOptionToDatalist('ingredients-options', ingredient));
-  allUtensils.forEach(utensil => this.addOptionToDatalist('utensils-options', utensil));
-  allAppliances.forEach(appliance => this.addOptionToDatalist('appliance-options', appliance));
-
-  // Vérifier si un mot-clé a été retiré de #keyword-tags-list
-  const keywordTagsList = document.getElementById('keyword-tags-list');
-  keywordTagsList.onchange = () => {
-    this.selectedKeywords = Array.from(keywordTagsList.children).map(tag => tag.textContent.trim());
-    this.applyFilters();
-  };
-
-  // Vérifier si #keyword-tags-list est vide
-  if (keywordTagsList.children.length === 0) {
-    // Si #keyword-tags-list est vide, afficher toutes les recettes
-    this.recipeApp.displayRecipes(this.recipes);
-  }
-}
 
 
-
-
-
-
+  
 ////// the end //////
 }
-
-
 
 
 

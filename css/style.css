@@ -165,6 +165,7 @@ input[type="text"] {
   border-radius: 4px;
   font-size: 16px;
   width: 300px;
+  background: white;
 }
 input[type="text"]:focus-visible {
     outline: none
@@ -210,14 +211,16 @@ ul{
 .suggestion-list{
 
     list-style: none;
-    background: #f8f8f8;
+    background: #ccc;
     z-index: 2;
-    
+    border-bottom-left-radius : 5px;
+    border-bottom-right-radius : 5px;
     position: absolute;
     top: 1em;
-    width: 89.5%;
+    width: 288px;
+    background: white;
     padding: 1em;
     box-shadow: 0px 7px 13px #40404047;
-    border: 1px solid #d1d1d1;
+    border: 1px solid #ccc;
     border-top: none;
 }
