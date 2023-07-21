@@ -21,7 +21,7 @@ h1 {
 h2 {
     color: #ffd15b;
     margin: auto;
-    width: 60%;
+    width: 70%;
     font-size: 48px;
     margin-top: 1em;
 }
@@ -32,15 +32,14 @@ p{
     display: flex;
     align-items: center;
     margin-bottom: 20px;
-    width: 80%;
+    width: 60%;
     margin: 5em auto;
 }
 
 #main-search-input {
     flex: 1;
     margin-right: 10px;
-    width: 70%;
-    height: 40px;
+    height: 4em;
     border-radius: 6px;
     border: 0px #b2b2b2 solid;
     padding: 1em;
