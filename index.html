@@ -4,6 +4,7 @@
 <head>
     <title>Les Petits Plats</title>
     <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <link rel="stylesheet" type="text/css" href="./css/filter.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
@@ -26,31 +27,43 @@
     </header>
 
     <main>
-        <div class="filters">
-            <div class="filter">
-              <legend>Ingredients</legend>
-              <div class="container">
-                <input type="text" id="ingredients-search-input" list="ingredients-options" placeholder="Search ingredients">
-                <datalist id="ingredients-options"></datalist>
-              </div>
+      <div class="row">
+        <div class="container">
+          <div class="searchInput">
+            <input type="text" placeholder="Saisir un ingredient...">
+            <div class="resultBox">
+              <!-- here list are inserted from javascript -->
             </div>
-            <div class="filter">
-              <legend>Utensils</legend>
-              <div class="container">
-                <input type="text" id="utensils-search-input" list="utensils-options" placeholder="Search utensils">
-                <datalist id="utensils-options"></datalist>
-              </div>
-            </div>
-            <div class="filter">
-              <legend>Appliance</legend>
-              <div class="container">
-                <input type="text" id="appliance-search-input" list="appliance-options" placeholder="Search appliance">
-                <datalist id="appliance-options"></datalist>
-              </div>
-            </div>
-            <ul id="autocomplete-suggestions"></ul>
+            <div class="icon"><i class="fas fa-search"></i></div>
           </div>
-          
+          <div class="selectedIngredients"></div>
+        </div>
+      
+        <div class="container">
+          <div class="ustensilsearchInput">
+            <input type="text" placeholder="Saisir un ustensile...">
+            <div class="ustensilsresultBox">
+              <!-- here list are inserted from javascript -->
+            </div>
+            <div class="icon"><i class="fas fa-search"></i></div>
+          </div>
+          <div class="selectedUstensils"></div>
+        </div>
+        <div class="container">
+          <div class="appliancesearchInput">
+            <input type="text" placeholder="Saisir un appareil...">
+       
+            <div class="appliancesresultBox">
+           
+            </div>
+            <div class="icon"><i class="fas fa-search"></i></div>
+          </div>
+          <div class="selectedAppliances"></div>
+        </div>
+      
+        <br><br>
+      </div>
+    
           
           
           
@@ -64,8 +77,8 @@
         </div>
     </main>
 
-    <script src="./script/app.js" type="module"></script>
-    <script src="./script/filter.js" type="module"></script>
+    <script src="./script/script.js" type="module"></script>
+
 </body>
 
 </html>

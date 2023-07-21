@@ -1,0 +1,225 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+
+::selection {
+    color: #fff;
+    background: #664AFF;
+  }
+  .row {
+      width: auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      height: auto;
+  }
+  .container {
+    width: 90%;
+
+  }
+  
+  .container .searchInput {
+    background: #fff;
+    width: 100%;
+    border-radius: 5px;
+    position: relative;
+    box-shadow: 0px 1px 5px 3px rgba(0, 0, 0, 0.12);
+  }
+  
+  .searchInput input {
+    height: 55px;
+    width: 100%;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    padding: 0 60px 0 20px;
+    font-size: 18px;
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .searchInput.active input {
+    border-radius: 5px 5px 0 0;
+  }
+  
+  .searchInput .resultBox {
+    padding: 0;
+    opacity: 0;
+    pointer-events: none;
+    max-height: 280px;
+    overflow-y: auto;
+  }
+  
+  .searchInput.active .resultBox {
+    padding: 10px 8px;
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 1;
+    position: absolute;
+    background: white;
+    width: 100%;
+    box-shadow: -4px 13px 17px #dbdbdb;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+  
+  .resultBox li {
+    list-style: none;
+    padding: 8px 12px;
+    display: none;
+    width: 100%;
+    cursor: default;
+    border-radius: 3px;
+  }
+  
+  .searchInput.active .resultBox li {
+    display: block;
+  }
+  
+  .resultBox li:hover {
+    background: #efefef;
+  }
+  
+   .icon {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 55px;
+    width: 55px;
+    text-align: center;
+    line-height: 55px;
+    font-size: 20px;
+    color: #644bff;
+    cursor: pointer;
+  }
+  
+  
+  /* input   appliancesearchInput
+      appliancesresultBox */
+  .container .appliancesearchInput {
+    background: #fff;
+    width: 100%;
+    border-radius: 5px;
+    position: relative;
+    box-shadow: 0px 1px 5px 3px rgba(0, 0, 0, 0.12);
+  }
+  
+  .appliancesearchInput input {
+    height: 55px;
+    width: 100%;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    padding: 0 60px 0 20px;
+    font-size: 18px;
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .appliancesearchInput.active input {
+    border-radius: 5px 5px 0 0;
+  }
+  
+  .appliancesearchInput .appliancesresultBox {
+    padding: 0;
+    opacity: 0;
+    pointer-events: none;
+    max-height: 280px;
+    overflow-y: auto;
+  }
+  
+  .appliancesearchInput.active .appliancesresultBox {
+    padding: 10px 8px;
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 1;
+    position: absolute;
+    background: white;
+    width: 100%;
+    box-shadow: -4px 13px 17px #dbdbdb;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+  
+  }
+  
+  .appliancesresultBox li {
+    list-style: none;
+    padding: 8px 12px;
+    display: none;
+    width: 100%;
+    cursor: default;
+    border-radius: 3px;
+  }
+  
+  .appliancesearchInput.active .appliancesresultBox li {
+    display: block;
+  }
+  
+  .appliancesresultBox li:hover {
+    background: #efefef;
+  }
+  
+  /* ustensilssearchInput*/
+  .container .ustensilsearchInput {
+    background: #fff;
+    width: 100%;
+    border-radius: 5px;
+    position: relative;
+    box-shadow: 0px 1px 5px 3px rgba(0, 0, 0, 0.12);
+  }
+  
+  .ustensilsearchInput input {
+    height: 55px;
+    width: 100%;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    padding: 0 60px 0 20px;
+    font-size: 18px;
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .ustensilsearchInput.active input {
+    border-radius: 5px 5px 0 0;
+  }
+  
+  .ustensilsearchInput .ustensilsresultBox {
+    padding: 0;
+    opacity: 0;
+    pointer-events: none;
+    max-height: 280px;
+    overflow-y: auto;
+  }
+  
+  .ustensilsearchInput.active .ustensilsresultBox {
+    padding: 10px 8px;
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 1;
+    position: absolute;
+    background: white;
+    width: 100%;
+    box-shadow: -4px 13px 17px #dbdbdb;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+  
+  .ustensilsresultBox li {
+    list-style: none;
+    padding: 8px 12px;
+    display: none;
+    width: 100%;
+    cursor: default;
+    border-radius: 3px;
+  }
+  
+  .ustensilsearchInput.active .ustensilsresultBox li {
+    display: block;
+  }
+  
+  .ustensilsresultBox li:hover {
+    background: #efefef;
+  }
+  

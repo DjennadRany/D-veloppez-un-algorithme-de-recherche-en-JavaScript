@@ -57,8 +57,8 @@ p{
 #results {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 20px;
-    width: 90%;
+    gap: 2em;
+    width: 100%;
     margin: auto;
 }
 .recipe img {
@@ -105,14 +105,15 @@ p.bol {
     position: relative;
     float: right;
     background: #FFD15B;
-    width: 65px;
-    padding: 8px 15px 0px 15px;
     gap: 10px;
-    height: 26px;
     border-radius: 14px;
     text-align: center;
     top: -15em;
     left: -1em;
+    width: 80px;
+    vertical-align: text-top;
+    margin: 0;
+    padding: 5px;
 }
 
 
