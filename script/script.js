@@ -80,13 +80,13 @@ export class RecipeApp {
     const selectedAppliances = this.applianceManager.getSelectedAppliances().map(keyword => keyword.toLowerCase());
     const selectedUstensils = this.ustensilManager.getSelectedUstensils().map(keyword => keyword.toLowerCase());
   
-    const allKeywords = [keywordsFromSearch, selectedIngredients, selectedAppliances, selectedUstensils];
+    const allKeywords = [...keywordsFromSearch, ...selectedIngredients, ...selectedAppliances, ...selectedUstensils];
   
     return this.recipes.filter(recipe => {
       const searchFields = [
         recipe.name.toLowerCase(),
         recipe.description.toLowerCase(),
-        recipe.ingredients.map(ingredient => ingredient.ingredient.toLowerCase())
+        ...recipe.ingredients.map(ingredient => ingredient.ingredient.toLowerCase())
       ];
   
       return allKeywords.every(keyword => {
@@ -219,7 +219,7 @@ class IngredientManager {
     const ingredients = recipes.reduce((acc, recipe) => {
       const recipeIngredients = recipe.ingredients.map(ingredient => ingredient.ingredient);
       const validIngredients = recipeIngredients.filter(ingredient => typeof ingredient === 'string');
-      return [acc, validIngredients];
+      return [...acc, ...validIngredients];
     }, []);
     return ingredients;
   }
@@ -262,7 +262,7 @@ class ApplianceManager {
     const appliances = recipes.reduce((acc, recipe) => {
       const validAppliance = typeof recipe.appliance === 'string' ? recipe.appliance : null;
       if (validAppliance) {
-        return [acc, validAppliance];
+        return [...acc, validAppliance];
       }
       return acc;
     }, []);
@@ -307,7 +307,7 @@ class UstensilManager {
     const ustensils = recipes.reduce((acc, recipe) => {
       const recipeUstensils = recipe.ustensils.map(ustensil => ustensil);
       const validUstensils = recipeUstensils.filter(ustensil => typeof ustensil === 'string');
-      return [acc, validUstensils];
+      return [...acc, ...validUstensils];
     }, []);
     return ustensils;
   }
@@ -333,7 +333,7 @@ class Autocomplete {
 
 
   showSuggestions(list) {
-  const uniqueList = [new Set(list)];
+  const uniqueList = [...new Set(list)];
   let listData = uniqueList.map((data) => `<li>${data}</li>`).join('');
   this.resultBox.innerHTML = listData;
 
