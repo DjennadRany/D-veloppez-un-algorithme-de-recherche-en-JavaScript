@@ -325,12 +325,16 @@ class Autocomplete {
     this.input = searchInput.querySelector("input");
     this.resultBox = resultBox;
     this.manager = manager;
-    this.recipes = recipes; // Stockez les recettes fournies en tant que propriété
+    this.recipes = recipes;
     this.type = type;
     this.input.addEventListener('keyup', (e) => this.handleUserInput(e));
+    this.input.addEventListener('click', () => this.showAllKeywords()); // Ajout du gestionnaire d'événement "click"
   }
-  
-
+  showAllKeywords() {
+    const allKeywords = this.extractDataFromRecipes(this.recipes);
+    this.showSuggestions(allKeywords);
+    this.searchInput.classList.add("active");
+  }
 
   showSuggestions(list) {
   const uniqueList = [...new Set(list)];
