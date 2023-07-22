@@ -52,7 +52,16 @@ p{
 #filter-button {
     padding: 5px 10px;
 }
-
+.selectedElement {
+    width: 100px;
+    background: #ffd15b;
+    margin: 1em 0em;
+    display: grid;
+    grid-template-columns: 1fr 20px;
+    border-radius: 3px;
+    padding: 5px;
+    align-items: center;
+}
 #results {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;

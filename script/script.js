@@ -79,21 +79,24 @@ export class RecipeApp {
     const selectedIngredients = this.ingredientManager.getSelectedIngredients().map(keyword => keyword.toLowerCase());
     const selectedAppliances = this.applianceManager.getSelectedAppliances().map(keyword => keyword.toLowerCase());
     const selectedUstensils = this.ustensilManager.getSelectedUstensils().map(keyword => keyword.toLowerCase());
-  
+
     const allKeywords = [...keywordsFromSearch, ...selectedIngredients, ...selectedAppliances, ...selectedUstensils];
-  
+
     return this.recipes.filter(recipe => {
       const searchFields = [
         recipe.name.toLowerCase(),
         recipe.description.toLowerCase(),
-        ...recipe.ingredients.map(ingredient => ingredient.ingredient.toLowerCase())
+        ...recipe.ingredients.map(ingredient => ingredient.ingredient.toLowerCase()),
+        recipe.appliance.toLowerCase(),
+        ...recipe.ustensils.map(ustensil => ustensil.toLowerCase())
       ];
-  
+
       return allKeywords.every(keyword => {
         return searchFields.some(field => field.includes(keyword));
       });
     });
   }
+  
 
   searchRecipes(searchTerm) {
     const filteredRecipes = this.filterRecipesByKeywords(searchTerm);
