@@ -2,9 +2,6 @@
 
 RecetteApp est une application de recherche de recettes de cuisine. Les utilisateurs peuvent rechercher des recettes en fonction de mots-clés, d'ingrédients, d'appareils et d'ustensiles. L'application utilise JavaScript, HTML et CSS pour l'interface utilisateur et les fonctionnalités de recherche.
 
-## Capture d'écran
-
-![Capture d'écran](screenshot.png)
 
 ## Fonctionnalités
 
