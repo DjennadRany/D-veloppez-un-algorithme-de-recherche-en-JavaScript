@@ -57,13 +57,12 @@ p{
 .selectedElement {
   background: #ffd15b;
   margin: 1em 0em;
-  display: flex;
+  display: grid;
   border-radius: 10px;
   padding: 17px 18px 17px 18px;
   align-items: center;
-  flex-wrap: nowrap;
-  flex-direction: row;
   justify-content: space-between;
+  grid-template-columns: 2fr 20px;
 }
 
 .close {
