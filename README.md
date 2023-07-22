@@ -25,6 +25,7 @@ RecetteApp est une application de recherche de recettes de cuisine. Les utilisat
 ## Crédits
 
 Les recettes utilisées dans l'application proviennent de [OpenClassRoom]
+
 https://djennadrany.github.io/Developpez-un-algorithme-de-recherche-en-JavaScript/.
 
 ## Auteur

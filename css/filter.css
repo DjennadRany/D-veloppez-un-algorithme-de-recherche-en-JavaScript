@@ -52,7 +52,9 @@
     max-height: 280px;
     overflow-y: auto;
   }
-  
+  .searchInput .resultBox{
+    display: none;
+  }
   .searchInput.active .resultBox {
     padding: 10px 8px;
     opacity: 1;
@@ -64,6 +66,7 @@
     box-shadow: -4px 13px 17px #dbdbdb;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
+    display: block;
   }
   
   .resultBox li {

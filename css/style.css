@@ -294,7 +294,7 @@ ul{
       float: none;
       background: #FFD15B;
       gap: 10px;
-      border-radius: 0;
+      border-radius: 14px;
       text-align: center;
       top: 0;
       left: 0;
@@ -302,10 +302,10 @@ ul{
       vertical-align: text-top;
       margin: 0;
       padding: 5px;
-      -webkit-border-radius: 0;
-      -moz-border-radius: 0;
-      -ms-border-radius: 0;
-      -o-border-radius: 0;
+      -webkit-border-radius: 14px;
+      -moz-border-radius: 14px;
+      -ms-border-radius: 14px;
+      -o-border-radius: 14px;
 }
   
     .ingredients-list {
@@ -350,6 +350,49 @@ ul{
   
     .recipe img {
       height: 300px;
+    }
+  }
+  
+  /* Ajoutez ces règles pour le responsive */
+
+/* Réorganiser les colonnes pour s'adapter aux appareils mobiles */
+@media screen and (max-width: 768px) {
+    .row {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  /* Réduire la taille de la police pour les petits écrans */
+  @media screen and (max-width: 576px) {
+    h2 {
+      font-size: 32px;
+    }
+  
+    .time {
+      font-size: 14px;
+    }
+  
+    p {
+      font-size: 16px;
+    }
+  
+    ul.ingredients-column li {
+      font-size: 14px;
+    }
+  }
+  
+  /* Réduire la largeur du champ de recherche pour les petits écrans */
+  @media screen and (max-width: 480px) {
+    #search-bar {
+      width: 90%;
+    }
+  }
+  
+  /* Réorganiser les colonnes pour les écrans de taille moyenne */
+  @media screen and (min-width: 769px) and (max-width: 992px) {
+    .row {
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
     }
   }
   

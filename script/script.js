@@ -70,6 +70,7 @@ export class RecipeApp {
       const searchTerm = this.searchInput.value.trim();
       this.searchRecipes(searchTerm);
     });
+    
   }
 
 
@@ -220,12 +221,13 @@ class IngredientManager {
 
   extractIngredientKeywords(recipes) {
     const ingredients = recipes.reduce((acc, recipe) => {
-      const recipeIngredients = recipe.ingredients.map(ingredient => ingredient.ingredient);
+      const recipeIngredients = recipe.ingredients.map(ingredient => ingredient.ingredient.toLowerCase());
       const validIngredients = recipeIngredients.filter(ingredient => typeof ingredient === 'string');
       return [...acc, ...validIngredients];
     }, []);
     return ingredients;
   }
+  
 
   onChange(callback) {
     this.onChangeCallback = callback;
@@ -263,7 +265,7 @@ class ApplianceManager {
 
   extractApplianceKeywords(recipes) {
     const appliances = recipes.reduce((acc, recipe) => {
-      const validAppliance = typeof recipe.appliance === 'string' ? recipe.appliance : null;
+      const validAppliance = typeof recipe.appliance === 'string' ? recipe.appliance.toLowerCase() : null;
       if (validAppliance) {
         return [...acc, validAppliance];
       }
@@ -271,6 +273,7 @@ class ApplianceManager {
     }, []);
     return appliances;
   }
+  
 
   onChange(callback) {
     this.onChangeCallback = callback;
@@ -308,12 +311,13 @@ class UstensilManager {
 
   extractUstensilKeywords(recipes) {
     const ustensils = recipes.reduce((acc, recipe) => {
-      const recipeUstensils = recipe.ustensils.map(ustensil => ustensil);
+      const recipeUstensils = recipe.ustensils.map(ustensil => ustensil.toLowerCase());
       const validUstensils = recipeUstensils.filter(ustensil => typeof ustensil === 'string');
       return [...acc, ...validUstensils];
     }, []);
     return ustensils;
   }
+  
 
   onChange(callback) {
     this.onChangeCallback = callback;
@@ -340,20 +344,28 @@ class Autocomplete {
   }
 
   showSuggestions(list) {
-  const uniqueList = [...new Set(list)];
-  let listData = uniqueList.map((data) => `<li>${data}</li>`).join('');
-  this.resultBox.innerHTML = listData;
-
-  const self = this; // Ajout de cette variable pour conserver une référence correcte à l'instance
-
-  let allList = this.resultBox.querySelectorAll("li");
-  for (let i = 0; i < allList.length; i++) {
-    allList[i].addEventListener("click", (event) => {
-      self.select(event.target); // Utilisation de la variable "self" pour appeler correctement la méthode "select"
+    const uniqueList = [...new Set(list)];
+    const selectedKeywords = this.manager[`getSelected${this.type.charAt(0).toUpperCase() + this.type.slice(1)}`]();
+  
+    let filteredList = uniqueList.filter((dataItem) => {
+      const lowerCaseDataItem = dataItem.toLowerCase();
+      return !selectedKeywords.some(selectedItem => selectedItem.toLowerCase() === lowerCaseDataItem);
     });
+  
+    let listData = filteredList.map((data) => `<li>${data}</li>`).join('');
+    this.resultBox.innerHTML = listData;
+  
+    const self = this; // Ajout de cette variable pour conserver une référence correcte à l'instance
+  
+    let allList = this.resultBox.querySelectorAll("li");
+    for (let i = 0; i < allList.length; i++) {
+      allList[i].addEventListener("click", (event) => {
+        self.select(event.target); // Utilisation de la variable "self" pour appeler correctement la méthode "select"
+      });
+    }
   }
-}
-
+  
+  
 
   select(element) {
     const selectedValue = element.innerText;
@@ -397,51 +409,68 @@ class Autocomplete {
     this.searchInput.classList.remove("active");
   }
 
-  async handleUserInput(e) {
-    let userData = e.target.value.trim();
-    let emptyArray = [];
+// Nouvelle méthode pour le débogage
+logDebugInfo(data, searchTerm) {
+  console.log(`===== DEBUG: ${this.type.toUpperCase()} AUTOCOMPLETE =====`);
+  console.log(`Data source for autocompletion:`, data);
+  console.log(`Search term:`, searchTerm);
+  console.log(`All keywords:`, this.extractDataFromRecipes(this.recipes));
+  console.log(`Selected ${this.type}:`, this.manager[`getSelected${this.type.charAt(0).toUpperCase() + this.type.slice(1)}`]());
+  console.log(`Matching keywords:`, data.filter((dataItem) => dataItem.toLowerCase().startsWith(searchTerm.toLowerCase())));
+  console.log(`Excluded keywords:`, data.filter((dataItem) => {
+    const selectedKeywords = this.manager[`getSelected${this.type.charAt(0).toUpperCase() + this.type.slice(1)}`]();
+    return selectedKeywords.includes(dataItem);
+  }));
+  console.log('========================');
+}
 
-    if (userData) {
-      const data = this.extractDataFromRecipes(this.recipes); // Utilisez les recettes fournies ici
+// Modifiez la méthode handleUserInput avec la nouvelle méthode de débogage
+async handleUserInput(e) {
+  let userData = e.target.value.trim();
+  let emptyArray = [];
 
-      emptyArray = data.filter((dataItem) => {
-        return dataItem.toLowerCase().startsWith(userData.toLowerCase());
-      });
+  if (userData) {
+    const data = this.extractDataFromRecipes(this.recipes);
 
-      emptyArray = emptyArray.filter((dataItem) => {
-        if (this.type === 'ingredients') {
-          return !this.manager.getSelectedIngredients().includes(dataItem);
-        } else if (this.type === 'appliances') {
-          return !this.manager.getSelectedAppliances().includes(dataItem);
-        } else if (this.type === 'ustensils') {
-          return !this.manager.getSelectedUstensils().includes(dataItem);
-        }
-        return false;
-      });
+    emptyArray = data.filter((dataItem) => {
+      return dataItem.toLowerCase().startsWith(userData.toLowerCase());
+    });
 
-      this.searchInput.classList.add("active");
-      this.showSuggestions(emptyArray);
+    emptyArray = emptyArray.filter((dataItem) => {
+      const selectedKeywords = this.manager[`getSelected${this.type.charAt(0).toUpperCase() + this.type.slice(1)}`]();
+      return !selectedKeywords.includes(dataItem);
+    });
 
-      let allList = this.resultBox.querySelectorAll("li");
-      for (let i = 0; i < allList.length; i++) {
-        allList[i].setAttribute("click", `autocomplete.select(this)`);
-      }
-    } else {
-      this.searchInput.classList.remove("active");
+    this.searchInput.classList.add("active");
+    this.showSuggestions(emptyArray);
+
+    // Nouvelle ligne pour le débogage
+    this.logDebugInfo(data, userData);
+
+    let allList = this.resultBox.querySelectorAll("li");
+    for (let i = 0; i < allList.length; i++) {
+      allList[i].setAttribute("click", `autocomplete.select(this)`);
     }
+  } else {
+    this.searchInput.classList.remove("active");
+    this.showSuggestions([]);
   }
+  
+}
   // Utilisez this.recipes pour extraire les mots-clés au lieu de recipeFetcher
   extractDataFromRecipes(recipes) {
     if (this.type === 'ingredients') {
       return this.manager.extractIngredientKeywords(recipes);
     } else if (this.type === 'appliances') {
-      return this.manager.extractApplianceKeywords(recipes); 
+      return this.manager.extractApplianceKeywords(recipes);
     } else if (this.type === 'ustensils') {
       return this.manager.extractUstensilKeywords(recipes);
     }
     return [];
   }
+  
 
+  
 }
 
 
