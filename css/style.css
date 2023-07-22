@@ -53,7 +53,7 @@ p{
     padding: 5px 10px;
 }
 .selectedElement {
-    width: 100px;
+    width: 30%;
     background: #ffd15b;
     margin: 1em 0em;
     display: grid;
