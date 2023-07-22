@@ -12,10 +12,10 @@
     background: #664AFF;
   }
   .row {
-      width: auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      height: auto;
+    width: auto;
+    display: grid;
+    grid-template-columns: 195px 195px 195px;
+    height: 70px;
   }
   .container {
     width: 90%;
@@ -95,7 +95,7 @@
     text-align: center;
     line-height: 55px;
     font-size: 20px;
-    color: #644bff;
+
     cursor: pointer;
   }
   
@@ -273,6 +273,6 @@
 /* Styles pour écran large (ordinateur de bureau) */
 @media screen and (min-width: 1025px) {
   .row {
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 195px 195px 195px;
   }
 }

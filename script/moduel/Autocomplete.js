@@ -1,20 +1,25 @@
 export default   class Autocomplete {
     constructor(searchInput, resultBox, manager, recipes, type) {
       this.searchInput = searchInput;
-      this.input = searchInput.querySelector("input");
+      this.input = searchInput.querySelector(".icon");
       this.resultBox = resultBox;
       this.manager = manager;
       this.recipes = recipes;
       this.type = type;
       this.input.addEventListener('keyup', (e) => this.handleUserInput(e));
-      this.input.addEventListener('click', () => this.showAllKeywords()); // Ajout du gestionnaire d'événement "click"
+      this.input.addEventListener('click', () => this.showAllKeywords()); 
+      this.input.addEventListener("click", () => {
+        this.rotate();
+      });
     }
     showAllKeywords() {
       const allKeywords = this.extractDataFromRecipes(this.recipes);
       this.showSuggestions(allKeywords);
       this.searchInput.classList.toggle("active");
+      this.input.classList.toggle("rotated-icon");
     }
-  
+    
+    
     showSuggestions(list) {
       const uniqueList = [...new Set(list)];
       const selectedKeywords = this.manager[`getSelected${this.type.charAt(0).toUpperCase() + this.type.slice(1)}`]();

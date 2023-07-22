@@ -14,6 +14,7 @@ header {
 
 main {
     padding: 20px;
+    background: #e6e6e6;
 }
 h1 {
     color: white;
@@ -24,6 +25,7 @@ h2 {
     width: 70%;
     font-size: 48px;
     margin-top: 1em;
+    font-family: Anton, sans-serif;
 }
 p{
     font-family: 'Manrope', sans-serif;
@@ -53,14 +55,19 @@ p{
     padding: 5px 10px;
 }
 .selectedElement {
-    width: 30%;
-    background: #ffd15b;
+  background: #ffd15b;
     margin: 1em 0em;
-    display: grid;
-    grid-template-columns: 1fr 20px;
+    display: flex;
     border-radius: 3px;
     padding: 5px;
     align-items: center;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.close {
+  margin-left: auto;
 }
 #results {
     display: grid;
@@ -85,6 +92,7 @@ p{
 }
 .recipe {
     width: 90%;
+    background: #fff;
     border-radius: 12px;
     box-shadow: 5px 5px 12px #90909061;
     -webkit-border-radius: 12px;
@@ -96,7 +104,13 @@ p{
 .block {
     padding: 2em;
 }
-
+.rotated-icon {
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+}
 ul.ingredients-column li {
     list-style: none;
 }
