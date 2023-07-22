@@ -52,48 +52,63 @@ showSuggestions(list) {
 
     
   
-    select(element) {
-      const selectedValue = element.innerText;
-      if (this.type === 'ingredients') {
-        this.manager.addSelectedIngredient(selectedValue);
-      } else if (this.type === 'appliances') {
-        this.manager.addSelectedAppliance(selectedValue);
-      } else if (this.type === 'ustensils') {
-        this.manager.addSelectedUstensil(selectedValue);
-      }
-  
-      const selectedElementDiv = document.createElement('div');
-      selectedElementDiv.classList.add('selectedElement');
-  
-      const selectedElementSpan = document.createElement('span');
-      selectedElementSpan.innerText = selectedValue;
-  
-      const closeButton = document.createElement('div');
-      closeButton.classList.add('close');
-      closeButton.innerText = 'x';
-      closeButton.addEventListener('click', () => {
-        if (this.type === 'ingredients') {
-          this.manager.removeSelectedIngredient(selectedValue);
-        } else if (this.type === 'appliances') {
-          this.manager.removeSelectedAppliance(selectedValue);
-        } else if (this.type === 'ustensils') {
-          this.manager.removeSelectedUstensil(selectedValue);
-        }
-        selectedElementDiv.remove();
-      });
-  
-      selectedElementDiv.appendChild(selectedElementSpan);
-      selectedElementDiv.appendChild(closeButton);
-  
-      const selectedElementsList = document.querySelector(`.selected${this.type.charAt(0).toUpperCase() + this.type.slice(1)}`);
-      selectedElementsList.appendChild(selectedElementDiv);
-  
-      
-   
-      this.searchInput.classList.remove("active");
-      this.input.classList.remove("rotated-icon");
-    }
+select(element) {
+  console.log("select() called"); // Ajoutez cette ligne pour vérifier si la fonction est appelée
 
+  const selectedValue = element.innerText;
+  if (this.type === 'ingredients') {
+    this.manager.addSelectedIngredient(selectedValue);
+  } else if (this.type === 'appliances') {
+    this.manager.addSelectedAppliance(selectedValue);
+  } else if (this.type === 'ustensils') {
+    this.manager.addSelectedUstensil(selectedValue);
+  }
+
+  const selectedElementDiv = document.createElement('div');
+  selectedElementDiv.classList.add('selectedElement');
+
+  const selectedElementSpan = document.createElement('span');
+  selectedElementSpan.innerText = selectedValue;
+
+  const closeButton = document.createElement('div');
+  closeButton.classList.add('close');
+  closeButton.innerText = 'x';
+  closeButton.addEventListener('click', () => {
+    if (this.type === 'ingredients') {
+      this.manager.removeSelectedIngredient(selectedValue);
+    } else if (this.type === 'appliances') {
+      this.manager.removeSelectedAppliance(selectedValue);
+    } else if (this.type === 'ustensils') {
+      this.manager.removeSelectedUstensil(selectedValue);
+    }
+    selectedElementDiv.remove();
+    this.resetInputAndSelection();// Réinitialiser l'input ici après avoir supprimé l'élément sélectionné
+    console.log("Input value reset 1" ); // Ajoutez cette ligne pour vérifier si la valeur de l'input est réinitialisée
+  });
+
+  selectedElementDiv.appendChild(selectedElementSpan);
+  selectedElementDiv.appendChild(closeButton);
+
+  const selectedElementsList = document.querySelector(`.selected${this.type.charAt(0).toUpperCase() + this.type.slice(1)}`);
+  selectedElementsList.appendChild(selectedElementDiv);
+  this.resetInputAndSelection();
+  this.searchInput.classList.remove("active");
+  this.input.classList.remove("rotated-icon");
+}
+
+
+resetInputAndSelection() {
+
+const ingredientsInputElement = document.querySelector('.searchInput input');
+ingredientsInputElement.value = '';
+const appliancesInputElement = document.querySelector('.appliancesearchInput input');
+appliancesInputElement.value = '';
+const ustensilsInputElement = document.querySelector('.ustensilsearchInput input');
+ustensilsInputElement.value = '';
+
+
+  console.log("Input value reset 2");
+}
   
   // Modifiez la méthode handleUserInput avec la nouvelle méthode de débogage
   async handleUserInput(e) {
@@ -121,7 +136,7 @@ showSuggestions(list) {
       } else {
         // Supprimer la classe "active" et "rotated-icon" des autres champs de saisie
       
-  
+        this.searchInput.value = "";
         this.searchInput.classList.remove("active");
         this.input.classList.remove("rotated-icon");
         this.showSuggestions([]);
