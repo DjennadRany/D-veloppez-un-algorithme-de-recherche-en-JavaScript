@@ -8,9 +8,7 @@ export default   class Autocomplete {
       this.type = type;
       this.input.addEventListener('keyup', (e) => this.handleUserInput(e));
       this.input.addEventListener('click', () => this.showAllKeywords()); 
-      this.input.addEventListener("click", () => {
-        this.rotate();
-      });
+    
     }
     showAllKeywords() {
       const allKeywords = this.extractDataFromRecipes(this.recipes);
