@@ -15,6 +15,7 @@
     width: auto;
     display: grid;
     grid-template-columns: 195px 195px 195px;
+    margin-bottom: 2em;
    
   }
   .container {
