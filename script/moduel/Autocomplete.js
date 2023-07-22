@@ -12,17 +12,13 @@ this.allInputs.forEach(input => {
 });
    
       this.input.addEventListener('click', () => this.showAllKeywords()); 
-    
+      searchInput.addEventListener('click', (e) => this.handleUserInput(e));
     }
     showAllKeywords() {
+      
       const allKeywords = this.extractDataFromRecipes(this.recipes);
       this.showSuggestions(allKeywords);
-      this.allInputs.forEach(input => {
-        if (input !== this.searchInput) {
-          input.classList.remove("active");
-          this.input.classList.add("rotated-icon");
-        }
-      });
+   
       this.searchInput.classList.toggle("active");
       this.input.classList.toggle("rotated-icon");
     }
@@ -93,12 +89,7 @@ showSuggestions(list) {
       selectedElementsList.appendChild(selectedElementDiv);
   
       
-      this.allInputs.forEach(input => {
-        if (input !== this.searchInput) {
-          input.classList.remove("active");
-          input.classList.remove("rotated-icon");
-        }
-      });
+   
       this.searchInput.classList.remove("active");
       this.input.classList.remove("rotated-icon");
     }
@@ -106,37 +97,35 @@ showSuggestions(list) {
   
   // Modifiez la méthode handleUserInput avec la nouvelle méthode de débogage
   async handleUserInput(e) {
-    let userData = e.target.value.trim();
-    let emptyArray = [];
+    const inputElement = e.target; // Stocker l'élément cible dans une variable pour plus de clarté
   
-    if (userData) {
-      const data = this.extractDataFromRecipes(this.recipes);
+    if (inputElement && inputElement.value) { // Vérifier que l'élément existe et a une valeur
+      let userData = inputElement.value.trim();
+      let emptyArray = [];
   
-      emptyArray = data.filter((dataItem) => {
-        return dataItem.toLowerCase().startsWith(userData.toLowerCase());
-      });
+      if (userData) {
+        const data = this.extractDataFromRecipes(this.recipes);
   
-      emptyArray = emptyArray.filter((dataItem) => {
-        const selectedKeywords = this.manager[`getSelected${this.type.charAt(0).toUpperCase() + this.type.slice(1)}`]();
-        return !selectedKeywords.includes(dataItem);
-      });
+        emptyArray = data.filter((dataItem) => {
+          return dataItem.toLowerCase().startsWith(userData.toLowerCase());
+        });
   
-      this.searchInput.classList.add("active");
-      this.showSuggestions(emptyArray);
+        emptyArray = emptyArray.filter((dataItem) => {
+          const selectedKeywords = this.manager[`getSelected${this.type.charAt(0).toUpperCase() + this.type.slice(1)}`]();
+          return !selectedKeywords.includes(dataItem);
+        });
+        this.input.classList.add("rotated-icon");
+        this.searchInput.classList.add("active");
+        this.showSuggestions(emptyArray);
   
- 
-    } else {
-      // Supprimer la classe "active" et "rotated-icon" des autres champs de saisie
-      this.allInputs.forEach(input => {
-        if (input !== this.searchInput) {
-          input.classList.remove("active");
-          input.classList.remove("rotated-icon");
-        }
-      });
+      } else {
+        // Supprimer la classe "active" et "rotated-icon" des autres champs de saisie
+      
   
-      this.searchInput.classList.remove("active");
-      this.input.classList.remove("rotated-icon");
-      this.showSuggestions([]);
+        this.searchInput.classList.remove("active");
+        this.input.classList.remove("rotated-icon");
+        this.showSuggestions([]);
+      }
     }
   }
   
