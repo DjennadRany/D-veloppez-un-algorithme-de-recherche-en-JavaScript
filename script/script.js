@@ -174,6 +174,6 @@ export class RecipeApp {
 }
 
 // Le reste du code reste inchangé
-const app = new RecipeApp();
+  const app = new RecipeApp();
 
 

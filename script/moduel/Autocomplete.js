@@ -1,45 +1,59 @@
 export default   class Autocomplete {
-    constructor(searchInput, resultBox, manager, recipes, type) {
+    constructor(searchInput, resultBox, manager, recipes, type, allInputs) {
       this.searchInput = searchInput;
       this.input = searchInput.querySelector(".icon");
       this.resultBox = resultBox;
       this.manager = manager;
       this.recipes = recipes;
       this.type = type;
-      this.input.addEventListener('keyup', (e) => this.handleUserInput(e));
+      this.allInputs = document.querySelectorAll('input');
+this.allInputs.forEach(input => {
+  searchInput.addEventListener('keyup', (e) => this.handleUserInput(e));
+});
+   
       this.input.addEventListener('click', () => this.showAllKeywords()); 
     
     }
     showAllKeywords() {
       const allKeywords = this.extractDataFromRecipes(this.recipes);
       this.showSuggestions(allKeywords);
+      this.allInputs.forEach(input => {
+        if (input !== this.searchInput) {
+          input.classList.remove("active");
+          this.input.classList.add("rotated-icon");
+        }
+      });
       this.searchInput.classList.toggle("active");
       this.input.classList.toggle("rotated-icon");
     }
     
     
-    showSuggestions(list) {
-      const uniqueList = [...new Set(list)];
-      const selectedKeywords = this.manager[`getSelected${this.type.charAt(0).toUpperCase() + this.type.slice(1)}`]();
-    
-      let filteredList = uniqueList.filter((dataItem) => {
-        const lowerCaseDataItem = dataItem.toLowerCase();
-        return !selectedKeywords.some(selectedItem => selectedItem.toLowerCase() === lowerCaseDataItem);
-      });
-    
-      let listData = filteredList.map((data) => `<li>${data}</li>`).join('');
-      this.resultBox.innerHTML = listData;
-    
-      const self = this; // Ajout de cette variable pour conserver une référence correcte à l'instance
-    
-      let allList = this.resultBox.querySelectorAll("li");
-      for (let i = 0; i < allList.length; i++) {
-        allList[i].addEventListener("click", (event) => {
-          self.select(event.target); // Utilisation de la variable "self" pour appeler correctement la méthode "select"
-        });
-      }
-    }
-    
+showSuggestions(list) {
+  const uniqueList = [...new Set(list)];
+  const selectedKeywords = this.manager[`getSelected${this.type.charAt(0).toUpperCase() + this.type.slice(1)}`]();
+
+ 
+
+  let filteredList = uniqueList.filter((dataItem) => {
+    const lowerCaseDataItem = dataItem.toLowerCase();
+    return !selectedKeywords.some(selectedItem => selectedItem.toLowerCase() === lowerCaseDataItem);
+  });
+
+ 
+
+  let listData = filteredList.map((data) => `<li>${data}</li>`).join('');
+  this.resultBox.innerHTML = listData;
+
+  const self = this; // Ajout de cette variable pour conserver une référence correcte à l'instance
+
+  let allList = this.resultBox.querySelectorAll("li");
+  for (let i = 0; i < allList.length; i++) {
+    allList[i].addEventListener("click", (event) => {
+      self.select(event.target); // Utilisation de la variable "self" pour appeler correctement la méthode "select"
+    });
+  }
+}
+
     
   
     select(element) {
@@ -79,25 +93,16 @@ export default   class Autocomplete {
       selectedElementsList.appendChild(selectedElementDiv);
   
       
-  
+      this.allInputs.forEach(input => {
+        if (input !== this.searchInput) {
+          input.classList.remove("active");
+          input.classList.remove("rotated-icon");
+        }
+      });
       this.searchInput.classList.remove("active");
       this.input.classList.remove("rotated-icon");
     }
-  
-  // Nouvelle méthode pour le débogage
-  logDebugInfo(data, searchTerm) {
-    console.log(`===== DEBUG: ${this.type.toUpperCase()} AUTOCOMPLETE =====`);
-    console.log(`Data source for autocompletion:`, data);
-    console.log(`Search term:`, searchTerm);
-    console.log(`All keywords:`, this.extractDataFromRecipes(this.recipes));
-    console.log(`Selected ${this.type}:`, this.manager[`getSelected${this.type.charAt(0).toUpperCase() + this.type.slice(1)}`]());
-    console.log(`Matching keywords:`, data.filter((dataItem) => dataItem.toLowerCase().startsWith(searchTerm.toLowerCase())));
-    console.log(`Excluded keywords:`, data.filter((dataItem) => {
-      const selectedKeywords = this.manager[`getSelected${this.type.charAt(0).toUpperCase() + this.type.slice(1)}`]();
-      return selectedKeywords.includes(dataItem);
-    }));
-    console.log('========================');
-  }
+
   
   // Modifiez la méthode handleUserInput avec la nouvelle méthode de débogage
   async handleUserInput(e) {
@@ -119,20 +124,22 @@ export default   class Autocomplete {
       this.searchInput.classList.add("active");
       this.showSuggestions(emptyArray);
   
-      // Nouvelle ligne pour le débogage
-      this.logDebugInfo(data, userData);
-  
-      let allList = this.resultBox.querySelectorAll("li");
-      for (let i = 0; i < allList.length; i++) {
-        allList[i].setAttribute("click", `autocomplete.select(this)`);
-      }
+ 
     } else {
+      // Supprimer la classe "active" et "rotated-icon" des autres champs de saisie
+      this.allInputs.forEach(input => {
+        if (input !== this.searchInput) {
+          input.classList.remove("active");
+          input.classList.remove("rotated-icon");
+        }
+      });
+  
       this.searchInput.classList.remove("active");
       this.input.classList.remove("rotated-icon");
       this.showSuggestions([]);
     }
-    
   }
+  
     // Utilisez this.recipes pour extraire les mots-clés au lieu de recipeFetcher
     extractDataFromRecipes(recipes) {
       if (this.type === 'ingredients') {
