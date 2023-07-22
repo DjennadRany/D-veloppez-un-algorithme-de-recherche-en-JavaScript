@@ -72,7 +72,7 @@ p{
 #results {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 2em;
+    gap: 2em 0em;
     width: 100%;
     margin: auto;
 }
@@ -99,6 +99,7 @@ p{
     -moz-border-radius: 12px;
     -ms-border-radius: 12px;
     -o-border-radius: 12px;
+    margin: 0 auto;
 }
 
 .block {
@@ -308,7 +309,7 @@ ul{
       float: none;
       background: #FFD15B;
       gap: 10px;
-      border-radius: 14px;
+      border-radius: 0px;
       text-align: center;
       top: 0;
       left: 0;
@@ -316,10 +317,10 @@ ul{
       vertical-align: text-top;
       margin: 0;
       padding: 5px;
-      -webkit-border-radius: 14px;
-      -moz-border-radius: 14px;
-      -ms-border-radius: 14px;
-      -o-border-radius: 14px;
+      -webkit-border-radius: 0px;
+      -moz-border-radius: 0px;
+      -ms-border-radius: 0px;
+      -o-border-radius: 0px;
 }
   
     .ingredients-list {
