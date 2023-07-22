@@ -233,3 +233,123 @@ ul{
     border: 1px solid #ccc;
     border-top: none;
 }
+
+
+
+
+
+/* Styles pour mobile */
+@media screen and (max-width: 768px) {
+    header {
+      background-position: center center;
+    }
+  
+    h2 {
+      font-size: 36px;
+    }
+  
+    #search-bar {
+      flex-direction: column;
+      align-items: stretch;
+      width: 90%;
+      margin: 3em auto;
+    }
+  
+    #main-search-input {
+      margin-right: 0;
+      margin-bottom: 10px;
+      width: 100%;
+    }
+  
+    #filter-select {
+      margin-right: 0;
+      margin-bottom: 10px;
+    }
+  
+    #filter-button {
+      width: 100%;
+    }
+  
+    .selectedElement {
+      width: auto;
+      margin: 0.5em 0;
+    }
+  
+    #results {
+      grid-template-columns: 1fr;
+    }
+  
+    .recipe img {
+      height: 200px;
+      border-radius: 12px 12px 0 0;
+    }
+  
+    .block {
+      padding: 1em;
+    }
+  
+    .time {
+      display: block;
+      position: static;
+      float: none;
+      background: #FFD15B;
+      gap: 10px;
+      border-radius: 0;
+      text-align: center;
+      top: 0;
+      left: 0;
+      width: auto;
+      vertical-align: text-top;
+      margin: 0;
+      padding: 5px;
+      -webkit-border-radius: 0;
+      -moz-border-radius: 0;
+      -ms-border-radius: 0;
+      -o-border-radius: 0;
+}
+  
+    .ingredients-list {
+      display: flex;
+      flex-direction: column;
+    }
+  
+    ul.ingredients-column li {
+      display: inline;
+      margin-right: 5px;
+    }
+  
+    .recipe {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 5px 5px 12px #90909061;
+      -webkit-border-radius: 12px;
+      -moz-border-radius: 12px;
+      -ms-border-radius: 12px;
+      -o-border-radius: 12px;
+    }
+  
+    .keyword-tag {
+      font-size: 14px;
+      padding: 2px 6px;
+    }
+  
+    .close-button {
+      margin-left: 4px;
+    }
+  }
+  
+  /* Styles pour tablette */
+  @media screen and (min-width: 769px) and (max-width: 1024px) {
+    h2 {
+      font-size: 40px;
+    }
+  
+    #search-bar {
+      width: 80%;
+    }
+  
+    .recipe img {
+      height: 300px;
+    }
+  }
+  

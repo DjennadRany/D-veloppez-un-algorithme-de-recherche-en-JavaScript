@@ -223,3 +223,53 @@
     background: #efefef;
   }
   
+
+  /* Styles pour mobile */
+@media screen and (max-width: 768px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+
+  .searchInput,
+  .appliancesearchInput,
+  .ustensilsearchInput {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .icon {
+    font-size: 24px;
+  }
+
+  .searchInput input,
+  .appliancesearchInput input,
+  .ustensilsearchInput input {
+    height: 45px;
+    font-size: 16px;
+    padding: 0 45px 0 15px;
+  }
+
+  .searchInput .resultBox,
+  .appliancesearchInput .appliancesresultBox,
+  .ustensilsearchInput .ustensilsresultBox {
+    max-height: 200px;
+  }
+}
+
+/* Styles pour tablette */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .icon {
+    font-size: 20px;
+  }
+}
+
+/* Styles pour écran large (ordinateur de bureau) */
+@media screen and (min-width: 1025px) {
+  .row {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
