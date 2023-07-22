@@ -78,10 +78,10 @@ export default   class Autocomplete {
       const selectedElementsList = document.querySelector(`.selected${this.type.charAt(0).toUpperCase() + this.type.slice(1)}`);
       selectedElementsList.appendChild(selectedElementDiv);
   
-      this.input.value = '';
-      this.input.focus();
+      
   
       this.searchInput.classList.remove("active");
+      this.input.classList.remove("rotated-icon");
     }
   
   // Nouvelle méthode pour le débogage
@@ -128,6 +128,7 @@ export default   class Autocomplete {
       }
     } else {
       this.searchInput.classList.remove("active");
+      this.input.classList.remove("rotated-icon");
       this.showSuggestions([]);
     }
     

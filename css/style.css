@@ -262,14 +262,20 @@ ul{
     h2 {
       font-size: 36px;
     }
-  
+    main {
+      padding: 3vh 3vh;
+        background: #e6e6e6;
+    }
     #search-bar {
       flex-direction: column;
       align-items: stretch;
       width: 90%;
       margin: 3em auto;
     }
-  
+    .container {
+      width: 90%;
+      margin: auto;
+  }
     #main-search-input {
       margin-right: 0;
       margin-bottom: 10px;
