@@ -9,7 +9,9 @@ export class RecipeApp {
     this.recipes = [];
     this.resultsContainer = document.getElementById('results');
     this.searchInput = document.getElementById('main-search-input');
-
+    this.ingredientAutocomplete = null;
+    this.applianceAutocomplete = null;
+    this.ustensilAutocomplete = null;
     this.ingredientManager = new IngredientManager();
     this.applianceManager = new ApplianceManager();
     this.ustensilManager = new UstensilManager();
@@ -50,31 +52,49 @@ export class RecipeApp {
         this.recipes,
         'ustensils'
       );
+
+      
     } catch (error) {
       console.error('Une erreur s\'est produite lors du chargement des recettes :', error);
     }
   }
 
   addEventListeners() {
-    this.searchInput.addEventListener('input', () => {
-      const searchTerm = this.searchInput.value.trim();
+    this.searchInput.addEventListener('input', (event) => {
+    const searchTerm = event.target.value.trim();
+    if (searchTerm.length >= 3) {
       this.searchRecipes(searchTerm);
-    });
+    } else {
+      this.displayRecipes(this.recipes);// Réinitialiser la liste des recettes si le terme de recherche a moins de 3 caractères
+    }
+  });
 
     // Add event listeners for ingredient, appliance, and ustensil selections
     this.ingredientManager.onChange(() => {
       const searchTerm = this.searchInput.value.trim();
-      this.searchRecipes(searchTerm);
+      if (searchTerm.length >= 1) {
+        this.searchRecipes(searchTerm);
+      } else {
+        this.resetInputAndSelection(); // Ajouter cette ligne pour fermer la liste des suggestions
+      }
     });
 
     this.applianceManager.onChange(() => {
       const searchTerm = this.searchInput.value.trim();
-      this.searchRecipes(searchTerm);
+      if (searchTerm.length >= 1) {
+        this.searchRecipes(searchTerm);
+      } else {
+        this.resetInputAndSelection();// Réinitialiser la liste des recettes si le terme de recherche a moins de 3 caractères
+      }
     });
 
     this.ustensilManager.onChange(() => {
       const searchTerm = this.searchInput.value.trim();
-      this.searchRecipes(searchTerm);
+      if (searchTerm.length >= 1) {
+        this.searchRecipes(searchTerm);
+      } else {
+        this.resetInputAndSelection();// Réinitialiser la liste des recettes si le terme de recherche a moins de 3 caractères
+      }
     });
     
   }
@@ -108,6 +128,7 @@ export class RecipeApp {
   searchRecipes(searchTerm) {
     const filteredRecipes = this.filterRecipesByKeywords(searchTerm);
     this.displayRecipes(filteredRecipes);
+    this.displayMatchingKeywordsOnPage();
   }
 
   fuzzySearch(str, searchTerm) {
@@ -171,9 +192,48 @@ export class RecipeApp {
 
     return recipeElement.firstChild;
   }
+
+  displayMatchingKeywordsOnPage() {
+    const articleTitles = Array.from(document.querySelectorAll('.block h3'));
+    const recipeTitlesOnPage = articleTitles.map((titleElement) => titleElement.innerText);
+  
+    const matchingKeywords = {};
+  
+    this.recipes.forEach((recipe) => {
+      const title = recipe.name;
+      const keywords = new Set();
+  
+      // Ajouter le titre de la recette comme mot-clé
+      keywords.add(title.toLowerCase());
+  
+      // Ajouter les ingrédients comme mots-clés
+      recipe.ingredients.forEach((ingredient) => {
+        const ingredientString = ingredient.toString(); // Convertir l'ingrédient en chaîne de caractères
+        keywords.add(ingredientString.toLowerCase());
+      });
+  
+      // Ajouter l'appareil comme mot-clé
+      keywords.add(recipe.appliance.toLowerCase());
+  
+      // Ajouter les ustensiles comme mots-clés
+      recipe.ustensils.forEach((ustensil) => {
+        keywords.add(ustensil.toLowerCase());
+      });
+  
+      // Vérifier si le titre correspond à un titre d'article sur la page
+      recipeTitlesOnPage.forEach((titleOnPage, index) => {
+        if (title.toLowerCase() === titleOnPage.toLowerCase()) {
+          matchingKeywords[titleOnPage] = Array.from(keywords);
+        }
+      });
+    });
+  
+    const totalRecipes = this.recipes.length;
+  
+    console.log("Nombre total de recettes :", totalRecipes);
+    console.log("Correspondance des titres d'articles avec les mots-clés :", matchingKeywords);
+  }
 }
 
 // Le reste du code reste inchangé
   const app = new RecipeApp();
-
-
