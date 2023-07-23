@@ -8,7 +8,8 @@ export default   class Autocomplete {
       this.type = type;
       this.allInputs = document.querySelectorAll('input');
 this.allInputs.forEach(input => {
-  searchInput.addEventListener('keyup', (e) => this.handleUserInput(e));
+  this.searchInput.addEventListener('keyup', (e) => this.handleUserInput(e));
+
 });
    
       this.input.addEventListener('click', () => this.showAllKeywords()); 
@@ -24,32 +25,44 @@ this.allInputs.forEach(input => {
     }
     
     
-showSuggestions(list) {
-  const uniqueList = [...new Set(list)];
-  const selectedKeywords = this.manager[`getSelected${this.type.charAt(0).toUpperCase() + this.type.slice(1)}`]();
-
- 
-
-  let filteredList = uniqueList.filter((dataItem) => {
-    const lowerCaseDataItem = dataItem.toLowerCase();
-    return !selectedKeywords.some(selectedItem => selectedItem.toLowerCase() === lowerCaseDataItem);
-  });
-
- 
-
-  let listData = filteredList.map((data) => `<li>${data}</li>`).join('');
-  this.resultBox.innerHTML = listData;
-
-  const self = this; // Ajout de cette variable pour conserver une référence correcte à l'instance
-
-  let allList = this.resultBox.querySelectorAll("li");
-  for (let i = 0; i < allList.length; i++) {
-    allList[i].addEventListener("click", (event) => {
-      self.select(event.target); // Utilisation de la variable "self" pour appeler correctement la méthode "select"
-    });
-  }
-}
-
+    showSuggestions(list) {
+      const uniqueList = [...new Set(list)];
+      const selectedKeywords = this.manager[`getSelected${this.type.charAt(0).toUpperCase() + this.type.slice(1)}`]();
+      
+      // Filtrer les mots-clés pour inclure uniquement ceux qui apparaissent dans les recettes présentes sur la page
+      let filteredList = uniqueList.filter((dataItem) => {
+        const lowerCaseDataItem = dataItem.toLowerCase();
+        return this.recipes.some(recipe => {
+          const searchFields = [
+            recipe.name.toLowerCase(),
+            recipe.description.toLowerCase(),
+            ...recipe.ingredients.map(ingredient => ingredient.ingredient.toLowerCase()),
+            recipe.appliance.toLowerCase(),
+            ...recipe.ustensils.map(ustensil => ustensil.toLowerCase())
+          ];
+          return searchFields.includes(lowerCaseDataItem);
+        });
+      });
+    
+      // Filtrer davantage la liste en excluant les mots-clés déjà sélectionnés
+      filteredList = filteredList.filter((dataItem) => {
+        const lowerCaseDataItem = dataItem.toLowerCase();
+        return !selectedKeywords.some(selectedItem => selectedItem.toLowerCase() === lowerCaseDataItem);
+      });
+    
+      let listData = filteredList.map((data) => `<li>${data}</li>`).join('');
+      this.resultBox.innerHTML = listData;
+    
+      const self = this; // Ajout de cette variable pour conserver une référence correcte à l'instance
+    
+      let allList = this.resultBox.querySelectorAll("li");
+      for (let i = 0; i < allList.length; i++) {
+        allList[i].addEventListener("click", (event) => {
+          self.select(event.target); // Utilisation de la variable "self" pour appeler correctement la méthode "select"
+        });
+      }
+    }
+    
     
   
 select(element) {
@@ -83,8 +96,7 @@ select(element) {
     }
     selectedElementDiv.remove();
     this.resetInputAndSelection();// Réinitialiser l'input ici après avoir supprimé l'élément sélectionné
-    console.log("Input value reset 1" ); // Ajoutez cette ligne pour vérifier si la valeur de l'input est réinitialisée
-  });
+   });
 
   selectedElementDiv.appendChild(selectedElementSpan);
   selectedElementDiv.appendChild(closeButton);
@@ -107,7 +119,6 @@ const ustensilsInputElement = document.querySelector('.ustensilsearchInput input
 ustensilsInputElement.value = '';
 
 
-  console.log("Input value reset 2");
 }
   
   // Modifiez la méthode handleUserInput avec la nouvelle méthode de débogage
@@ -122,7 +133,7 @@ ustensilsInputElement.value = '';
         const data = this.extractDataFromRecipes(this.recipes);
   
         emptyArray = data.filter((dataItem) => {
-          return dataItem.toLowerCase().startsWith(userData.toLowerCase());
+          return dataItem.toLowerCase().includes(userData.toLowerCase());
         });
   
         emptyArray = emptyArray.filter((dataItem) => {
@@ -140,6 +151,11 @@ ustensilsInputElement.value = '';
         this.searchInput.classList.remove("active");
         this.input.classList.remove("rotated-icon");
         this.showSuggestions([]);
+            // Mettre à jour les mots-clés dans this.searchInput
+    const allKeywords = [...uniqueIngredients, ...uniqueUstensils, ...uniqueAppliances];
+    const filteredKeywords = allKeywords.filter(keyword => keyword.includes(userData.toLowerCase()));
+    this.showSuggestions(filteredKeywords, 'searchInput');
+
       }
     }
   }
