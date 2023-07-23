@@ -15,39 +15,40 @@ searchInput.addEventListener('keyup', (e) => this.handleUserInput(e));
     searchInput.addEventListener('click', (e) => this.handleUserInput(e));
   }
   showAllKeywords() {
+    
     const allKeywords = this.extractDataFromRecipes(this.recipes);
-    const sortedKeywords = allKeywords.sort((a, b) => a.localeCompare(b, 'fr', { sensitivity: 'base' }));
-    this.showSuggestions(sortedKeywords);
+    this.showSuggestions(allKeywords);
+ 
     this.searchInput.classList.toggle("active");
     this.input.classList.toggle("rotated-icon");
   }
   
   
-  showSuggestions(list) {
-    const uniqueList = [...new Set(list)];
-    const selectedKeywords = this.manager[`getSelected${this.type.charAt(0).toUpperCase() + this.type.slice(1)}`]();
-    
-    
-    
-    let filteredList = uniqueList.filter((dataItem) => {
-      const lowerCaseDataItem = dataItem.toLowerCase();
-      return !selectedKeywords.some(selectedItem => selectedItem.toLowerCase() === lowerCaseDataItem);
-    });
-    
-    
-    
-    let listData = filteredList.map((data) => `<li>${data}</li>`).join('');
-    this.resultBox.innerHTML = listData;
-    
-    const self = this; // Ajout de cette variable pour conserver une référence correcte à l'instance
-    
-    let allList = this.resultBox.querySelectorAll("li");
-    for (let i = 0; i < allList.length; i++) {
-      allList[i].addEventListener("click", (event) => {
-        self.select(event.target); // Utilisation de la variable "self" pour appeler correctement la méthode "select"
-      });
-    }
-    }
+showSuggestions(list) {
+const uniqueList = [...new Set(list)];
+const selectedKeywords = this.manager[`getSelected${this.type.charAt(0).toUpperCase() + this.type.slice(1)}`]();
+
+
+
+let filteredList = uniqueList.filter((dataItem) => {
+  const lowerCaseDataItem = dataItem.toLowerCase();
+  return !selectedKeywords.some(selectedItem => selectedItem.toLowerCase() === lowerCaseDataItem);
+});
+
+
+
+let listData = filteredList.map((data) => `<li>${data}</li>`).join('');
+this.resultBox.innerHTML = listData;
+
+const self = this; // Ajout de cette variable pour conserver une référence correcte à l'instance
+
+let allList = this.resultBox.querySelectorAll("li");
+for (let i = 0; i < allList.length; i++) {
+  allList[i].addEventListener("click", (event) => {
+    self.select(event.target); // Utilisation de la variable "self" pour appeler correctement la méthode "select"
+  });
+}
+}
 
   
 
@@ -82,7 +83,8 @@ closeButton.addEventListener('click', () => {
   }
   selectedElementDiv.remove();
   this.resetInputAndSelection();// Réinitialiser l'input ici après avoir supprimé l'élément sélectionné
- });
+  console.log("Input value reset 1" ); // Ajoutez cette ligne pour vérifier si la valeur de l'input est réinitialisée
+});
 
 selectedElementDiv.appendChild(selectedElementSpan);
 selectedElementDiv.appendChild(closeButton);
@@ -105,6 +107,7 @@ const ustensilsInputElement = document.querySelector('.ustensilsearchInput input
 ustensilsInputElement.value = '';
 
 
+console.log("Input value reset 2");
 }
 
 // Modifiez la méthode handleUserInput avec la nouvelle méthode de débogage
@@ -119,7 +122,7 @@ async handleUserInput(e) {
       const data = this.extractDataFromRecipes(this.recipes);
 
       emptyArray = data.filter((dataItem) => {
-        return dataItem.toLowerCase().includes(userData.toLowerCase());
+        return dataItem.toLowerCase().startsWith(userData.toLowerCase());
       });
 
       emptyArray = emptyArray.filter((dataItem) => {
