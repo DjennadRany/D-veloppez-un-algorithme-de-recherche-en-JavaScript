@@ -53,7 +53,6 @@ for (let i = 0; i < allList.length; i++) {
   
 
 select(element) {
-console.log("select() called"); // Ajoutez cette ligne pour vérifier si la fonction est appelée
 
 const selectedValue = element.innerText;
 if (this.type === 'ingredients') {
@@ -83,7 +82,7 @@ closeButton.addEventListener('click', () => {
   }
   selectedElementDiv.remove();
   this.resetInputAndSelection();// Réinitialiser l'input ici après avoir supprimé l'élément sélectionné
-  console.log("Input value reset 1" ); // Ajoutez cette ligne pour vérifier si la valeur de l'input est réinitialisée
+
 });
 
 selectedElementDiv.appendChild(selectedElementSpan);
@@ -107,7 +106,7 @@ const ustensilsInputElement = document.querySelector('.ustensilsearchInput input
 ustensilsInputElement.value = '';
 
 
-console.log("Input value reset 2");
+
 }
 
 // Modifiez la méthode handleUserInput avec la nouvelle méthode de débogage
