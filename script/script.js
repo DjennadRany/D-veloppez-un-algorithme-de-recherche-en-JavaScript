@@ -89,36 +89,20 @@ export class RecipeApp {
   
     const allKeywords = [...keywordsFromSearch, ...selectedIngredients, ...selectedAppliances, ...selectedUstensils];
   
-    const filteredRecipes = [];
-  
-    for (const recipe of this.recipes) {
+    return this.recipes.filter(recipe => {
       const searchFields = [
         recipe.name.toLowerCase(),
         recipe.description.toLowerCase(),
+        ...recipe.ingredients.map(ingredient => ingredient.ingredient.toLowerCase()),
+        recipe.appliance.toLowerCase(),
+        ...recipe.ustensils.map(ustensil => ustensil.toLowerCase())
       ];
   
-      for (const ingredient of recipe.ingredients) {
-        searchFields.push(ingredient.ingredient.toLowerCase());
-      }
-  
-      searchFields.push(recipe.appliance.toLowerCase());
-  
-      for (const ustensil of recipe.ustensils) {
-        searchFields.push(ustensil.toLowerCase());
-      }
-  
-      const matchesAllKeywords = allKeywords.every(keyword => {
+      return allKeywords.every(keyword => {
         return searchFields.some(field => field.includes(keyword));
       });
-  
-      if (matchesAllKeywords) {
-        filteredRecipes.push(recipe);
-      }
-    }
-  
-    return filteredRecipes;
+    });
   }
-  
   
 
   searchRecipes(searchTerm) {
