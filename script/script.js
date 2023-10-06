@@ -114,20 +114,83 @@ export class RecipeApp {
     return str.includes(searchTerm);
   }
 
+
   displayRecipes(recipes) {
     this.resultsContainer.innerHTML = '';
-
+  
     if (recipes.length === 0) {
       this.resultsContainer.innerHTML = 'Aucune recette trouvée.';
       return;
     }
-
+  
+    // Obtenez les mots-clés d'ingrédients, d'appareils et d'ustensiles correspondant aux recettes présentes
+    const ingredientKeywords = this.extractIngredientKeywords(recipes);
+    const applianceKeywords = this.extractApplianceKeywords(recipes);
+    const ustensilKeywords = this.extractUstensilKeywords(recipes);
+  
+    // Affichez les mots-clés dans les listes des mots-clés
+    const ingredientList = document.querySelector(".resultBox");
+    ingredientList.innerHTML = '';
+    ingredientKeywords.forEach(keyword => {
+      const listItem = document.createElement('li');
+      listItem.textContent = keyword;
+      ingredientList.appendChild(listItem);
+    });
+  
+    const applianceList = document.querySelector(".appliancesresultBox");
+    applianceList.innerHTML = '';
+    applianceKeywords.forEach(keyword => {
+      const listItem = document.createElement('li');
+      listItem.textContent = keyword;
+      applianceList.appendChild(listItem);
+    });
+  
+    const ustensilList = document.querySelector(".ustensilsresultBox");
+    ustensilList.innerHTML = '';
+    ustensilKeywords.forEach(keyword => {
+      const listItem = document.createElement('li');
+      listItem.textContent = keyword;
+      ustensilList.appendChild(listItem);
+    });
+  
+    // Affichez les recettes
     recipes.forEach(recipe => {
       const recipeElement = this.createRecipeElement(recipe);
       this.resultsContainer.appendChild(recipeElement);
     });
   }
+  
+  
+  
 
+  extractIngredientKeywords(recipes) {
+    const ingredients = recipes.reduce((acc, recipe) => {
+      const recipeIngredients = recipe.ingredients.map(ingredient => ingredient.ingredient.toLowerCase());
+      const validIngredients = recipeIngredients.filter(ingredient => typeof ingredient === 'string');
+      return [...acc, ...validIngredients];
+    }, []);
+    return ingredients;
+  }
+  
+  extractApplianceKeywords(recipes) {
+    const appliances = recipes.reduce((acc, recipe) => {
+      const validAppliance = typeof recipe.appliance === 'string' ? recipe.appliance.toLowerCase() : null;
+      if (validAppliance) {
+        return [...acc, validAppliance];
+      }
+      return acc;
+    }, []);
+    return appliances;
+  }
+  
+  extractUstensilKeywords(recipes) {
+    const ustensils = recipes.reduce((acc, recipe) => {
+      const recipeUstensils = recipe.ustensils.map(ustensil => ustensil.toLowerCase());
+      const validUstensils = recipeUstensils.filter(ustensil => typeof ustensil === 'string');
+      return [...acc, ...validUstensils];
+    }, []);
+    return ustensils;
+  }
   createRecipeElement(recipe) {
     const template = `
       <div class="recipe">
@@ -175,4 +238,3 @@ export class RecipeApp {
 
 // Le reste du code reste inchangé
   const app = new RecipeApp();
-
