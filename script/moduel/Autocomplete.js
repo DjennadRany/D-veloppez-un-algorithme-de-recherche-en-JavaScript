@@ -95,18 +95,19 @@ this.searchInput.classList.remove("active");
 this.input.classList.remove("rotated-icon");
 }
 
+// RESET
+  setRecipes(recipes) {
+    this.recipes = recipes;
+  }
 
 resetInputAndSelection() {
 
-const ingredientsInputElement = document.querySelector('.searchInput input');
-ingredientsInputElement.value = '';
-const appliancesInputElement = document.querySelector('.appliancesearchInput input');
-appliancesInputElement.value = '';
-const ustensilsInputElement = document.querySelector('.ustensilsearchInput input');
-ustensilsInputElement.value = '';
-
-
-
+  const ingredientsInputElement = document.querySelector('.searchInput input');
+  ingredientsInputElement.value = '';
+  const appliancesInputElement = document.querySelector('.appliancesearchInput input');
+  appliancesInputElement.value = '';
+  const ustensilsInputElement = document.querySelector('.ustensilsearchInput input');
+  ustensilsInputElement.value = '';
 }
 
 // Modifiez la méthode handleUserInput avec la nouvelle méthode de débogage

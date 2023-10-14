@@ -13,9 +13,14 @@ export class RecipeApp {
     this.ingredientManager = new IngredientManager();
     this.applianceManager = new ApplianceManager();
     this.ustensilManager = new UstensilManager();
+    
+    this.ingredientAutocomplete
+    this.applianceAutocomplete
+    this.ustensilAutocomplete
 
     this.loadRecipesAndKeywords();
     this.addEventListeners();
+
   }
 
   async loadRecipesAndKeywords() {
@@ -27,7 +32,7 @@ export class RecipeApp {
       this.displayRecipes(this.recipes);
 
       // Instanciate Autocomplete for ingredients, appliances, and ustensils here
-      const ingredientAutocomplete = new Autocomplete(
+      this.ingredientAutocomplete = new Autocomplete(
         document.querySelector(".searchInput"),
         document.querySelector(".resultBox"),
         this.ingredientManager,
@@ -35,7 +40,7 @@ export class RecipeApp {
         'ingredients'
       );
 
-      const applianceAutocomplete = new Autocomplete(
+      this.applianceAutocomplete = new Autocomplete(
         document.querySelector(".appliancesearchInput"),
         document.querySelector(".appliancesresultBox"),
         this.applianceManager,
@@ -43,7 +48,7 @@ export class RecipeApp {
         'appliances'
       );
 
-      const ustensilAutocomplete = new Autocomplete(
+      this.ustensilAutocomplete = new Autocomplete(
         document.querySelector(".ustensilsearchInput"),
         document.querySelector(".ustensilsresultBox"),
         this.ustensilManager,
@@ -104,9 +109,14 @@ export class RecipeApp {
     });
   }
   
-
+  // Recherche par mot clef
   searchRecipes(searchTerm) {
     const filteredRecipes = this.filterRecipesByKeywords(searchTerm);
+
+    this.ingredientAutocomplete.setRecipes(filteredRecipes)
+    this.applianceAutocomplete.setRecipes(filteredRecipes)
+    this.ustensilAutocomplete.setRecipes(filteredRecipes)
+
     this.displayRecipes(filteredRecipes);
   }
 
@@ -116,17 +126,22 @@ export class RecipeApp {
 
 
   displayRecipes(recipes) {
+    const ingredientKeywords = this.extractIngredientKeywords(recipes);
+    const applianceKeywords = this.extractApplianceKeywords(recipes);
+    const ustensilKeywords = this.extractUstensilKeywords(recipes);
+
     this.resultsContainer.innerHTML = '';
   
     if (recipes.length === 0) {
       this.resultsContainer.innerHTML = 'Aucune recette trouvée.';
+      this.ingredientAutocomplete.showAllKeywords()
+      this.applianceAutocomplete.showAllKeywords()
+      this.ustensilAutocomplete.showAllKeywords()
       return;
     }
-  
+
     // Obtenez les mots-clés d'ingrédients, d'appareils et d'ustensiles correspondant aux recettes présentes
-    const ingredientKeywords = this.extractIngredientKeywords(recipes);
-    const applianceKeywords = this.extractApplianceKeywords(recipes);
-    const ustensilKeywords = this.extractUstensilKeywords(recipes);
+  
   
     // Affichez les mots-clés dans les listes des mots-clés
     const ingredientList = document.querySelector(".resultBox");
@@ -160,9 +175,6 @@ export class RecipeApp {
     });
   }
   
-  
-  
-
   extractIngredientKeywords(recipes) {
     const ingredients = recipes.reduce((acc, recipe) => {
       const recipeIngredients = recipe.ingredients.map(ingredient => ingredient.ingredient.toLowerCase());

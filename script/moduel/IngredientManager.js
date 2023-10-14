@@ -27,15 +27,18 @@ export default class IngredientManager {
     return this.selectedIngredients;
   }
 
-
   extractIngredientKeywords(recipes) {
     const ingredients = recipes.reduce((acc, recipe) => {
-      const recipeIngredients = recipe.ingredients.map(ingredient => ingredient.ingredient.toLowerCase());
-      const validIngredients = recipeIngredients.filter(ingredient => typeof ingredient === 'string');
-      return [...acc, ...validIngredients];
+      if (recipe.ingredients && Array.isArray(recipe.ingredients)) {
+        const recipeIngredients = recipe.ingredients.map(ingredient => ingredient.ingredient.toLowerCase());
+        const validIngredients = recipeIngredients.filter(ingredient => typeof ingredient === 'string');
+        return [...acc, ...validIngredients];
+      }
+      return acc; // Si recipe.ingredients n'est pas défini ou n'est pas un tableau valide, retournez simplement l'accumulateur actuel.
     }, []);
     return ingredients;
   }
+  
   
 
   onChange(callback) {
