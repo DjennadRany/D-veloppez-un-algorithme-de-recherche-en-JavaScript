@@ -126,9 +126,9 @@ export class RecipeApp {
 
 
   displayRecipes(recipes) {
-    const ingredientKeywords = this.extractIngredientKeywords(recipes);
-    const applianceKeywords = this.extractApplianceKeywords(recipes);
-    const ustensilKeywords = this.extractUstensilKeywords(recipes);
+    const ingredientKeywords = this.extractIngredientKeyword(recipes);
+    const applianceKeywords = this.extractApplianceKeyword(recipes);
+    const ustensilKeywords = this.extractUstensilKeyword(recipes);
 
     this.resultsContainer.innerHTML = '';
   
@@ -175,7 +175,7 @@ export class RecipeApp {
     });
   }
   
-  extractIngredientKeywords(recipes) {
+  extractIngredientKeyword(recipes) {
     const ingredients = recipes.reduce((acc, recipe) => {
       const recipeIngredients = recipe.ingredients.map(ingredient => ingredient.ingredient.toLowerCase());
       const validIngredients = recipeIngredients.filter(ingredient => typeof ingredient === 'string');
@@ -184,7 +184,7 @@ export class RecipeApp {
     return ingredients;
   }
   
-  extractApplianceKeywords(recipes) {
+  extractApplianceKeyword(recipes) {
     const appliances = recipes.reduce((acc, recipe) => {
       const validAppliance = typeof recipe.appliance === 'string' ? recipe.appliance.toLowerCase() : null;
       if (validAppliance) {
@@ -195,7 +195,7 @@ export class RecipeApp {
     return appliances;
   }
   
-  extractUstensilKeywords(recipes) {
+  extractUstensilKeyword(recipes) {
     const ustensils = recipes.reduce((acc, recipe) => {
       const recipeUstensils = recipe.ustensils.map(ustensil => ustensil.toLowerCase());
       const validUstensils = recipeUstensils.filter(ustensil => typeof ustensil === 'string');
