@@ -358,6 +358,13 @@ ul{
     }
   }
   
+
+  .displayed-recipe-count {
+    position: relative;
+    float: right;
+    margin: auto;
+}
+
   /* Styles pour tablette */
   @media screen and (min-width: 769px) and (max-width: 1024px) {
     h2 {

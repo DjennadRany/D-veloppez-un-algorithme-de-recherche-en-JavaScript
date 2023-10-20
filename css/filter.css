@@ -14,7 +14,7 @@
   .row {
     width: auto;
     display: grid;
-    grid-template-columns: 195px 195px 195px;
+    grid-template-columns: 195px 195px 195px 1fr;
     margin-bottom: 2em;
    
   }
@@ -274,6 +274,6 @@
 /* Styles pour écran large (ordinateur de bureau) */
 @media screen and (min-width: 1025px) {
   .row {
-    grid-template-columns: 195px 195px 195px;
+    grid-template-columns: 195px 195px 195px 1fr;
   }
 }

@@ -30,6 +30,7 @@ export class RecipeApp {
       this.recipes = await recipeFetcher.fetchRecipes();
 
       this.displayRecipes(this.recipes);
+      this.updateDisplayedRecipeCount();
 
       // Instanciate Autocomplete for ingredients, appliances, and ustensils here
       this.ingredientAutocomplete = new Autocomplete(
@@ -124,21 +125,39 @@ export class RecipeApp {
     return str.includes(searchTerm);
   }
 
-
+     // Cette méthode compte les recettes affichées et met à jour la div spécifiée
+     updateDisplayedRecipeCount() {
+      const displayedRecipeCount = this.resultsContainer.querySelectorAll('.recipe').length;
+      const countDisplay = document.querySelector('.displayed-recipe-count');
+    
+      if (countDisplay) {
+        countDisplay.textContent = `${displayedRecipeCount} recettes affichées`;
+      }
+    
+      const resultsContainer = document.getElementById('results');
+      const numberOfRecipes = resultsContainer.querySelectorAll('.recipe').length;
+      console.log(`Nombre d'éléments avec la classe "recipe" dans #results : ${numberOfRecipes}`);
+      
+    }
+    
+    
   displayRecipes(recipes) {
     const ingredientKeywords = this.extractIngredientKeyword(recipes);
     const applianceKeywords = this.extractApplianceKeyword(recipes);
     const ustensilKeywords = this.extractUstensilKeyword(recipes);
-
+  
     this.resultsContainer.innerHTML = '';
   
     if (recipes.length === 0) {
       this.resultsContainer.innerHTML = 'Aucune recette trouvée.';
       this.ingredientAutocomplete.showAllKeywords()
       this.applianceAutocomplete.showAllKeywords()
-      this.ustensilAutocomplete.showAllKeywords()
+
       return;
     }
+
+
+
 
     // Obtenez les mots-clés d'ingrédients, d'appareils et d'ustensiles correspondant aux recettes présentes
   
@@ -173,6 +192,7 @@ export class RecipeApp {
       const recipeElement = this.createRecipeElement(recipe);
       this.resultsContainer.appendChild(recipeElement);
     });
+    this.updateDisplayedRecipeCount();
   }
   
   extractIngredientKeyword(recipes) {
